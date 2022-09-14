@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+ 
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Concept - Bootstrap 4 Admin Dashboard Template</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.min.css">
+    <link href="../assets/vendor/fonts/circular-std/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/libs/css/style.css">
+    <link rel="stylesheet" href="../assets/vendor/fonts/fontawesome/css/fontawesome-all.css">
+    <style>
+    html,
+    body {
+        height: 100%;
+    }
+
+    body {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-align: center;
+        align-items: center;
+        padding-top: 40px;
+        padding-bottom: 40px;
+    }
+    </style>
+</head>
+
+
+<body>
+    <form class="splash-container" action="/sign-up" method="post" id="form">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="mb-1">Registrations Form</h3>
+                <p>Please enter your user information.</p>
+           
+
+
+
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <input class="form-control form-control-lg" name="phone_number"  placeholder="Phone Number" autocomplete="off" type="number">
+                </div>
+                <div class="form-group">
+                    <input class="form-control form-control-lg" type="email" name="email"  placeholder="E-mail" autocomplete="off" name="password">
+                </div>
+                <div class="form-group">
+                    <input class="form-control form-control-lg" id="pass1" type="password" required="" placeholder="Password" name="password"required>
+                </div>
+                <div class="form-group">
+                    <input class="form-control form-control-lg" required="" placeholder="Confirm" type="password" name="password2" required>
+                </div>
+                <div class="form-group pt-2">
+                    <input class="btn btn-block btn-myOrange" type="submit" value="Register My Account">
+                </div>
+                <div class="form-group">
+                    <label class="custom-control custom-checkbox">
+                        <input class="custom-control-input" type="checkbox"><span class="custom-control-label">By creating an account, you agree the <a href="#">terms and conditions</a></span>
+                    </label>
+                </div>
+            </div>
+            <div class="card-footer bg-white">
+                <p>Already member? <a href="/login" class="text-secondary">Login Here.</a></p>
+            </div>
+        </div>
+       
+    </form>
+     {{#if emailExist}}
+     <div style="position: absolute;z-index:100;margin-left:40%">
+       <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    Email and phone_number have already been registered.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+                </div>
+                {{/if}}
+                {{#if samepassword}}
+     <div style="position: absolute;z-index:100;margin-left:40%">
+       <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    Password is incorrect.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+                </div>
+                {{/if}}
+
+
+   
+     {{!-- {{#if error}}
+     <div style="position: absolute;z-index:100;margin-left:40%">
+         {{#each error}}
+       <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    {{this.msg}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+                {{/each}}
+                </div>
+                {{/if}} --}}
+
+    <script src="../assets/vendor/jquery/jquery-3.3.1.min.js"></script>
+    <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+    <script src="../assets/vendor/slimscroll/jquery.slimscroll.js"></script>
+    <script src="../assets/vendor/parsley/parsley.js"></script>
+    <script src="../assets/libs/js/main-js.js"></script>
+
+                <script>
+    $('#form').parsley();
+    </script>
+    <script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+    </script>
+
+</body>
+
+ 
+</html>

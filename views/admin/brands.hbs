@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/assets/vendor/bootstrap/css/bootstrap.min.css">
+    <link href="../assets/vendor/fonts/circular-std/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/libs/css/style.css">
+    <link rel="stylesheet" href="../assets/vendor/fonts/fontawesome/css/fontawesome-all.css">
+    <link rel="stylesheet" type="text/css" href="../assets/vendor/datatables/css/dataTables.bootstrap4.css">
+    <link rel="stylesheet" type="text/css" href="../assets/vendor/datatables/css/buttons.bootstrap4.css">
+    <link rel="stylesheet" type="text/css" href="../assets/vendor/datatables/css/select.bootstrap4.css">
+    <link rel="stylesheet" type="text/css" href="../assets/vendor/datatables/css/fixedHeader.bootstrap4.css">
+</head>
+
+<body>
+    <!-- ============================================================== -->
+    <!-- main wrapper -->
+    <!-- ============================================================== -->
+
+    <!-- ============================================================== -->
+    <!-- navbar -->
+    <!-- ============================================================== -->
+
+    <!-- wrapper  -->
+    <!-- ============================================================== -->
+    <div class="dashboard-wrapper">
+        <div class="container-fluid  dashboard-content">
+            <!-- ============================================================== -->
+            <!-- pageheader -->
+            <!-- ============================================================== -->
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="page-header">
+                        <h2 class="pageheader-title">Category</h2>
+                        <p class="pageheader-text">Brands</p>
+                        <div class="page-breadcrumb">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="/admin/category"
+                                            class="breadcrumb-link">Category</a></li>
+                                    <li class="breadcrumb-item"><a href="/admin/brands"
+                                            class="breadcrumb-link">Brands</a></li>
+
+
+                                </ol>
+                            </nav>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- end pageheader -->
+            <!-- ============================================================== -->
+            <div class="row">
+                <!-- ============================================================== -->
+                <!-- basic table  -->
+                <!-- ============================================================== -->
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between">
+                            <h5 class="d-inline ">Brands</h5>
+                            <button class="d-inline btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#addbrands">Add Brands</button>
+
+                        </div>
+                        <div class="modal fade " id="addbrands" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Add brands</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form method="post" action="/admin/add-brand" id="form" enctype="multipart/form-data">
+                                            {{!-- {{#if categorIsCheck}}
+                                <p>This category alredy exist</p>
+                                {{/if}} --}}
+
+                                            <div class="form-group">
+                                                <label for="recipient-name" class="col-form-label">Brand
+                                                    name</label>
+                                                <input type="text" class="form-control" placeholder="Brand name"
+                                                    name="brandName" required />
+                                            </div>
+                                            <div class="form-group">
+                                                <img src="" alt="" width="100px" height="100px" id="imageView">
+                                                <label for="recipient-name" class="col-form-label">Brand Logo
+                                                </label>
+                                                <input type="file" class="form-control" placeholder="Brand Logo"
+                                                    name="brandLogo" id="" onchange="changeImage(event)" required />
+                                            </div>
+
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Close</button>
+                                                <input type="submit" class="btn btn-primary" value="Add"
+                                                    onclick="return Validate()" />
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered first">
+                                    <thead>
+                                        <tr>
+                                            <th>Logo</th>
+                                            <th>Name</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#each brands}}
+                                        <tr>
+                                            <td><img src="{{this.brandLogo}}" alt="" width="100px" height="75px"></td>
+                                            <td>{{this.brandName}}</td>
+                                            <td>
+                                                <span><a href="h" class="mr-4" data-toggle="modal"
+                                                            data-target="#editbrands{{this._id}}"
+                                                            data-placement="top" title="Edit"><i
+                                                                class="fa fa-edit color-muted"></i> </a>
+                                                        <a href="javascript:void()" data-toggle="modal"
+                                                            data-target="#exampleModal2{{this._id}}"
+                                                            data-placement="top" title="Delete"><i
+                                                                class="fa fa-trash color-danger"></i></a></span>
+                                            </td>
+                                        </tr>
+
+                                        {{!-- delete --}}
+
+                                        <div class="modal fade" id="exampleModal2{{this._id}}" tabindex="-1"
+                                                aria-labelledby="exampleModalLabel2{{this._id}}" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel2{{this._id}}">
+                                                                Delete category </h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+
+                                                            Delete {{this.brandName}} from brands
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-light"
+                                                                data-dismiss="modal">Close</button>
+                                                            <a href="/admin/delete-brand/{{this._id}}" type="button"
+                                                                class="btn btn-danger">
+
+                                                                Delete
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            {{!-- update Brands --}}
+                                            <div class="modal fade " id="editbrands{{this._id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Edit Brand</h5>
+                                        <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form method="post" action="/admin/update-brand/{{this._id}}" id="form" enctype="multipart/form-data">
+                                            {{!-- {{#if categorIsCheck}}
+                                <p>This category alredy exist</p>
+                                {{/if}} --}}
+
+                                            <div class="form-group">
+                                                <label for="recipient-name" class="col-form-label">Brand
+                                                    name</label>
+                                                <input type="text" class="form-control" value="{{this.brandName}}"
+                                                    name="brandName"  />
+                                            </div>
+                                            <div class="form-group">
+                                                <img src="{{this.brandLogo}}" alt="" width="100px" height="100px" id="imageView1">
+                                                <label for="recipient-name" class="col-form-label">Brand Logo
+                                                </label>
+                                                <input type="file" class="form-control" placeholder="Brand Logo"
+                                                    name="brandLogo" id="" onchange="changeImage1(event)" />
+                                            </div>
+
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Close</button>
+                                                <input type="submit" class="btn btn-primary" value="Add"
+                                                    onclick="return Validate()" />
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                             function changeImage1(event) {
+                document.getElementById('imageView1').src = URL.createObjectURL(event.target.files[0])
+                
+            }
+                        </script>
+
+
+                                        {{/each}}
+
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Logo</th>
+                                            <th>Name</th>
+
+                                            <th>Actions</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- end basic table  -->
+                <!-- ============================================================== -->
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- end data table multiselects  -->
+            <!-- ============================================================== -->
+
+            <!-- ============================================================== -->
+            <!-- footer -->
+            <!-- ============================================================== -->
+            <div class="footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                            Copyright © 2012 Concept. All rights reserved. by <a href="/">refelection</a>.
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                            <div class="text-md-right footer-links d-none d-sm-block">
+                                <a href="javascript: void(0);">About</a>
+                                <a href="javascript: void(0);">Support</a>
+                                <a href="javascript: void(0);">Contact Us</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            function changeImage(event) {
+                document.getElementById('imageView').src = URL.createObjectURL(event.target.files[0])
+            }
+           
+        </script>
+        <!-- ============================================================== -->
+        <!-- end footer -->
+        <!-- ============================================================== -->
+
+        <!-- ============================================================== -->
+        <!-- end main wrapper -->
+        <!-- ============================================================== -->
+        <!-- Optional JavaScript -->
+        <script src="../assets/vendor/jquery/jquery-3.3.1.min.js"></script>
+        <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+        <script src="../assets/vendor/slimscroll/jquery.slimscroll.js"></script>
+        <script src="../assets/vendor/multi-select/js/jquery.multi-select.js"></script>
+        <script src="../assets/libs/js/main-js.js"></script>
+        <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+        <script src="../assets/vendor/datatables/js/dataTables.bootstrap4.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+        <script src="../assets/vendor/datatables/js/buttons.bootstrap4.min.js"></script>
+        <script src="../assets/vendor/datatables/js/data-table.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+        <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.colVis.min.js"></script>
+        <script src="https://cdn.datatables.net/rowgroup/1.0.4/js/dataTables.rowGroup.min.js"></script>
+        <script src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
+        <script src="https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"></script>
+
+</body>
+
+</html>

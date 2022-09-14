@@ -1,0 +1,575 @@
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css" />
+    <style>
+        .profile-pic-wrapper {
+            height: 100vh;
+            width: 100%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .pic-holder {
+            text-align: center;
+            position:
+                relative;
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            overflow:
+                hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .pic-holder .pic {
+            height: 100%;
+            width: 100%;
+            -o-object-fit: cover;
+            object-fit: cover;
+            -o-object-position: center;
+            object-position: center;
+        }
+
+        .pic-holder .upload-file-block,
+        .pic-holder .upload-loader {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width:
+                100%;
+            background-color: rgba(90, 92, 105, 0.7);
+            color: #f8f9fc;
+            font-size:
+                12px;
+            font-weight: 600;
+            opacity: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .pic-holder .upload-file-block {
+            cursor: pointer;
+        }
+
+        .pic-holder:hover .upload-file-block,
+        .uploadProfileInput:focus~.upload-file-block {
+            opacity: 1;
+        }
+
+        .pic-holder.uploadInProgress .upload-file-block {
+            display:
+                none;
+        }
+
+        .pic-holder.uploadInProgress .upload-loader {
+            opacity: 1;
+        }
+
+        /*
+      Snackbar css */
+        .snackbar {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius:
+                2px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            bottom: 30px;
+            font-size: 14px;
+            transform: translateX(-50%);
+        }
+
+        .snackbar.show {
+            visibility: visible;
+            -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        @-webkit-keyframes fadein {
+            from {
+                bottom: 0;
+                opacity: 0;
+            }
+
+            to {
+                bottom: 30px;
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadein {
+            from {
+                bottom: 0;
+                opacity: 0;
+            }
+
+            to {
+                bottom: 30px;
+                opacity: 1;
+            }
+        }
+
+        @-webkit-keyframes fadeout {
+            from {
+                bottom: 30px;
+                opacity:
+                    1;
+            }
+
+            to {
+                bottom: 0;
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeout {
+            from {
+                bottom:
+                    30px;
+                opacity: 1;
+            }
+
+            to {
+                bottom: 0;
+                opacity: 0;
+            }
+        }
+    </style>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/assets/vendor/bootstrap/css/bootstrap.min.css" />
+    <link href="/assets/vendor/fonts/circular-std/style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/libs/css/style.css" />
+    <link rel="stylesheet" href="/assets/vendor/fonts/fontawesome/css/fontawesome-all.css" />
+    <link rel="stylesheet" href="/assets/vendor/charts/chartist-bundle/chartist.css" />
+    <link rel="stylesheet" href="/assets/vendor/charts/morris-bundle/morris.css" />
+    <link rel="stylesheet" href="/assets/vendor/fonts/material-design-iconic-font/css/materialdesignicons.min.css" />
+    <link rel="stylesheet" href="/assets/vendor/charts/c3charts/c3.css" />
+    <link rel="stylesheet" href="/assets/vendor/fonts/flag-icon-css/flag-icon.min.css" />
+
+    <!-- datatable -->
+    <link rel="stylesheet" type="text/css" href="/assets/vendor/datatables/css/dataTables.bootstrap4.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/vendor/datatables/css/buttons.bootstrap4.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/vendor/datatables/css/select.bootstrap4.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/vendor/datatables/css/fixedHeader.bootstrap4.css" />
+
+</head>
+
+<body>
+
+    <!-- wrapper  -->
+    <!-- ============================================================== -->
+    <div class="dashboard-wrapper">
+        <div class="container-fluid dashboard-content">
+            <!-- ============================================================== -->
+            <!-- pageheader -->
+            <!-- ============================================================== -->
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="page-header">
+                        <h2 class="pageheader-title">View Category </h2>
+                        <p class="pageheader-text">Proin placerat ante duiullam
+                            scelerisque a velit ac porta, fusce sit amet vestibulum mi.
+                            Morbi lobortis pulvinar quam.</p>
+                        <div class="page-breadcrumb">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>
+                                    <li class="breadcrumb-item"><a href="/admin/category"
+                                            class="breadcrumb-link">Category</a></li>
+
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- end pageheader -->
+
+            <div class="row page-titles mx-0">
+                <div class="col-sm-6 p-md-0">
+                    <div class="welcome-text">
+                        <h4></h4>
+                        <p class="mb-3"></p>
+                    </div>
+                </div>
+                <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                    <ol class="breadcrumb">
+
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
+                            data-whatever="@mdo">Add Category</button>
+                    </ol>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- momant -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Add categories</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form method="post" action="/admin/add-category" id="form" enctype="multipart/form-data">
+                            <div class="modal-body">
+                                {{#if categorIsCheck}}
+                                    <p>This category alredy exist</p>
+                                {{/if}}
+
+                                <div class="form-group">
+                                    <label for="recipient-name" class="col-form-label">Category
+                                        name</label>
+                                    <input type="text" class="form-control" placeholder="Category name"
+                                        name="subCategory" id="subCategory" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="recipient-name" class="col-form-label">Parent
+                                        Category</label>
+                                    <select class="form-select form-select-disabled-color"
+                                        aria-label="Default select example" name="parentCategory" id="parentCategory"
+                                        required>
+                                        <option selected value="">Options</option>
+                                        {{#each parentCategories}}
+                                            <option value="{{this._id}}">{{this.parentCategory}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="recipient-name" class="col-form-label">
+                                        Category</label>
+                                    <input type="file" class="form-control" placeholder="Category name" name="image_url"
+                                        id="" required onchange="changeImage(event)" />
+                                    <img src="" alt="" width="100px" height="75px" id="imageView">
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <input type="submit" class="btn btn-primary" value="Add" onclick="return Validate()" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- momant end -->
+
+            <div class="row">
+                <!-- ============================================================== -->
+                <!-- data table  -->
+                <!-- ============================================================== -->
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Category</h5>
+
+                        </div>
+                        <div class="card-body">
+
+                            <div class="table-responsive" id="handlebars-demo" type="text/x-handlebars-template">
+                                <table id="example" class="table table-striped table-bordered second"
+                                    style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Image</th>
+                                            <th>Category</th>
+
+                                            <th>Parent Category</th>
+                                            <th>
+                                                Status
+                                                </tt>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#each categories}}
+                                            <tr>
+                                                <td>{{@index}}</td>
+                                                <td><img src="{{this.image_url}}" alt="" width="100px" height="75px" />
+                                                <td>{{this.subCategory}}</td>
+                                                <td id="this-parentCategory">{{this.result.[0].parentCategory}}</td>
+                                                <td>{{#if this.status}}
+                                                        <a style="color: red;cursor: pointer"
+                                                            onclick="blockParentCategory('{{this._id}}')"
+                                                            id="parent-category{{this._id}}">Unlist</a>
+                                                    {{else}}
+                                                        <a style="color: green;cursor: pointer"
+                                                            onclick="blockParentCategory('{{this._id}}')"
+                                                            id="parent-category{{this._id}}">Publish</a>
+                                                    {{/if}}
+                                                </td>
+
+
+                                                <td> <span><a href="h" class="mr-4" data-toggle="modal"
+                                                            data-target="#exampleModal3{{this._id}}"
+                                                            data-placement="top" title="Edit"><i
+                                                                class="fa fa-edit color-muted"></i> </a>
+                                                        <a href="javascript:void()" data-toggle="modal"
+                                                            data-target="#exampleModal2{{this._id}}"
+                                                            data-placement="top" title="Delete"><i
+                                                                class="fa fa-trash color-danger"></i></a></span></td>
+
+                                            </tr>
+
+
+                                            {{!-- delete --}}
+                                            <div class="modal fade" id="exampleModal2{{this._id}}" tabindex="-1"
+                                                aria-labelledby="exampleModalLabel2{{this._id}}" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel2{{this._id}}">
+                                                                Delete category </h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+
+                                                            Delete {{this.subCategory}} from category
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-light"
+                                                                data-dismiss="modal">Close</button>
+                                                            <a href="/admin/delete-category/{{this._id}}" type="button"
+                                                                class="btn btn-danger">
+
+                                                                Delete
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+
+                                            {{!-- update --}}
+
+                                            <div class="modal fade" id="exampleModal3{{this._id}}" tabindex="-1"
+                                                role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Edit
+                                                                categories</h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <form method="post" action="/admin/update-category/{{this._id}}/{{this.cloudinary_id}}"
+                                                            id="form" enctype="multipart/form-data">
+                                                            <div class="modal-body">
+
+                                                                <div class="form-group">
+                                                                    <label for="recipient-name"
+                                                                        class="col-form-label">Category
+                                                                        name</label>
+                                                                    <input type="text" class="form-control"
+                                                                        name="subCategory" id="subCategory" required
+                                                                        value="{{this.subCategory}}" />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="recipient-name"
+                                                                        class="col-form-label">Parent
+                                                                        Category</label>
+                                                                    <select
+                                                                        class="form-select form-select-disabled-color"
+                                                                        aria-label="Default select example"
+                                                                        name="parentCategory" id="parentCategory"
+                                                                        required>
+                                                                        <option value="">Options</option>
+                                                                        {{#each ../parentCategories}}
+
+                                                                            <option value="{{this._id}}"
+                                                                                {{isSelected this.parentCategory ../this.result.[0].parentCategory}}>
+                                                                                {{this.parentCategory}}</option>
+                                                                        {{/each}}
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="recipient-name" class="col-form-label">
+                                                                        Category</label>
+                                                                    <input type="file" class="form-control"
+                                                                        placeholder="Category name" name="image_url"
+                                                                        id="" onchange="changeImage(event)" />
+                                                                    <img src="{{this.image_url}}" alt="" width="100px" height="75px"
+                                                                        id="imageView">
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Close</button>
+                                                                <input type="submit" class="btn btn-primary"
+                                                                    value=" Update" />
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {{/each}}
+
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Category</th>
+
+                                            <th>Action</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- end data table  -->
+                <!-- ============================================================== -->
+            </div>
+
+        </div>
+        <!-- ============================================================== -->
+        <!-- footer -->
+        <!-- ============================================================== -->
+        <div class="footer">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                        Copyright © 2022 Concept. All rights reserved. by
+                        <a href="https://swynfords.com/wp/">Swynfords</a>.
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                        <div class="text-md-right footer-links d-none d-sm-block">
+                            <a href="javascript: void(0);">About</a>
+                            <a href="javascript: void(0);">Support</a>
+                            <a href="javascript: void(0);">Contact Us</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ============================================================== -->
+        <!-- end footer -->
+        <!-- ============================================================== -->
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.js"
+        integrity="sha256-ZafrO8ZXERYO794Tx1hPaAcdcXNZUNmXufXOSe0Hxj8=" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        function changeImage(event) {
+            document.getElementById('imageView').src = URL.createObjectURL(event.target.files[0])
+        }
+        function Validate() {
+            var subCategory = document.getElementById("subCategory");
+            var parentCategory = document.getElementById("parentCategory");
+            if (subCategory.value == "") { //If the "Please Select" option is selected display error. 
+                alert("Please enter category!"); return false;
+            }
+            else if (parentCategory.value == "") { alert("Please select an option!"); return false; }
+            return true;
+        }
+         function blockParentCategory(id) {
+            
+            fetch('http://localhost:3000/admin/category-block/' + id , {
+                method: 'POST'
+            }).then((response) => response.json()).then((response) => {
+                if (response.status) {
+
+                    document.getElementById('parent-category' + id).innerHTML = 'Publish'
+                    document.getElementById('parent-category' + id).style.color = "green";
+
+                }
+                else {
+                    document.getElementById('parent-category' + id).innerHTML = 'Unlist'
+                    document.getElementById('parent-category' + id).style.color = "red";
+
+                }
+
+
+            })
+        }
+
+    </script>
+
+    <!-- ============================================================== -->
+    <!-- end main wrapper  -->
+    <!-- ============================================================== -->
+    <!-- Optional JavaScript -->
+    <!-- jquery 3.3.1 -->
+    <script src="/assets/vendor/jquery/jquery-3.3.1.min.js"></script>
+    <!-- bootstap bundle js -->
+    <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+    <!-- slimscroll js -->
+    <script src="/assets/vendor/slimscroll/jquery.slimscroll.js"></script>
+    <!-- main js -->
+    <script src="/assets/libs/js/main-js.js"></script>
+    <!-- chart chartist js -->
+    <script src="/assets/vendor/charts/chartist-bundle/chartist.min.js"></script>
+    <!-- sparkline js -->
+    <script src="/assets/vendor/charts/sparkline/jquery.sparkline.js"></script>
+    <!-- morris js -->
+    <script src="/assets/vendor/charts/morris-bundle/raphael.min.js"></script>
+    <script src="/assets/vendor/charts/morris-bundle/morris.js"></script>
+    <!-- chart c3 js -->
+    <script src="/assets/vendor/charts/c3charts/c3.min.js"></script>
+    <script src="/assets/vendor/charts/c3charts/d3-5.4.0.min.js"></script>
+    <script src="/assets/vendor/charts/c3charts/C3chartjs.js"></script>
+    <script src="/assets/libs/js/dashboard-ecommerce.js"></script>
+    <script src="/assets/libs/js/file.js"></script>
+    <script>
+        $(document).ready(function () { $('#example').DataTable(); });
+    </script>
+
+    <!-- datatables -->
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+
+    <script src="/https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="/assets/vendor/datatables/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+    <script src="/assets/vendor/datatables/js/buttons.bootstrap4.min.js"></script>
+    <script src="/assets/vendor/datatables/js/data-table.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/rowgroup/1.0.4/js/dataTables.rowGroup.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"></script>
+</body>
+
+</html>

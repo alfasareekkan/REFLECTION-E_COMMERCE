@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Data Tables</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/assets/vendor/bootstrap/css/bootstrap.min.css">
+    <link href="/assets/vendor/fonts/circular-std/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/libs/css/style.css">
+    <link rel="stylesheet" href="/assets/vendor/fonts/fontawesome/css/fontawesome-all.css">
+    <link rel="stylesheet" type="text/css" href="/assets/vendor/datatables/css/dataTables.bootstrap4.css">
+    <link rel="stylesheet" type="text/css" href="/assets/vendor/datatables/css/buttons.bootstrap4.css">
+    <link rel="stylesheet" type="text/css" href="/assets/vendor/datatables/css/select.bootstrap4.css">
+    <link rel="stylesheet" type="text/css" href="/assets/vendor/datatables/css/fixedHeader.bootstrap4.css">
+</head>
+
+<body>
+    <!-- ============================================================== -->
+    <!-- main wrapper -->
+    <!-- ============================================================== -->
+
+    <!-- ============================================================== -->
+    <!-- navbar -->
+    <!-- ============================================================== -->
+
+    <!-- ============================================================== -->
+    <!-- end left sidebar -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- wrapper  -->
+    <!-- ============================================================== -->
+    <div class="dashboard-wrapper">
+        <div class="container-fluid  dashboard-content">
+            <!-- ============================================================== -->
+            <!-- pageheader -->
+            <!-- ============================================================== -->
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="page-header">
+                        <h2 class="pageheader-title">Product Tables</h2>
+                        <p class="pageheader-text">Proin placerat ante duiullam scelerisque a velit ac porta, fusce sit
+                            amet vestibulum mi. Morbi lobortis pulvinar quam.</p>
+                        <div class="page-breadcrumb">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="/admin/products"
+                                            class="breadcrumb-link">Products</a></li>
+
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- end pageheader -->
+            <!-- ============================================================== -->
+            <div class="row">
+                <!-- ============================================================== -->
+                <!-- basic table  -->
+                <!-- ============================================================== -->
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between">
+                            <h5 class="d-inline ">Product Table</h5>
+                            <a href="/admin/add-products"><button class="d-inline btn btn-primary"
+                                    data-bs-toggle="modal" data-bs-target="#addbrands">Add Products</button></a>
+
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered first">
+                                    <thead>
+                                        <tr>
+                                            <th>Image</th>
+                                            <th>Product</th>
+                                            <th>Price</th>
+                                            <th>Brand</th>
+                                            <th>Category</th>
+                                            <th>Published</th>
+                                            <th>Stock</th>
+                                            <th>List/Unlist</th>
+                                            <th>Actions</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#each products}}
+                                            <tr>
+                                                <td><img src="{{this.image.[0].iamge_url}}" alt="" width="75px"
+                                                        height="50px"></td>
+                                                <td>{{this.title}}</td>
+                                                <td>{{this.price}} ₹</td>
+                                                <td>{{this.brand.[0].brandName}}</td>
+                                                <td><span>{{this.category.[0].subCategory}}
+                                                        <p class="text-muted fs-6">[{{this.parent.[0].parentCategory}}]
+                                                        </p>
+                                                    </span></td>
+
+                                                <td>{{this.createdDay}}-{{this.createdMonth}}-{{this.createdYear}}</td>
+                                                <td>
+                                                    <!-- Button trigger modal -->
+                                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                        data-bs-target="#exampleModal{{this._id}}"
+                                                        onclick="getAllSizes('{{this.category.[0]._id}}')">
+                                                        Quantity
+                                                    </button>
+
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="exampleModal{{this._id}}" tabindex="-1"
+                                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="exampleModalLabel">
+                                                                        Quantity with size</h5>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                                </div>
+                                                                        <form action="/admin/v1/get-all-size-with-catogory/{{this._id}}" method="post">
+
+                                                                <div class="modal-body">
+
+                                                                    <table class="table">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th scope="col">Sizes</th>
+                                                                                <th scope="col">Quntity</th>
+                                                                               
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody id="allSize{{this.category.[0]._id}}">
+                                                                            
+                                                                            {{!-- <tr>
+                                                                                <form action=""></form>
+                                                                                
+                                                                                <th scope="row">1</th>
+                                                                                <td><div class="form-group">
+                                                                            
+                                                                            <input type="text" class="form-control"
+                                                                                placeholder="Enter Quantity" name="size"
+                                                                                required />
+                                                                        </div></td>
+                                                                                <td><input type="submit" class="btn btn-primary" value="Add"></td>
+                                                                               
+                                                                                <form action=""></form>
+                                                                            </tr> --}}
+                                                                            
+                                                                            
+                                                                        </tbody>
+                                                                        
+                                                                    </table>
+                                                                    {{!-- <form action="">
+                                                                        <div class="form-group">
+                                                                            <label for="recipient-name"
+                                                                                class="col-form-label">
+                                                                                Sizes</label>
+                                                                            <select
+                                                                                class="form-select form-select-disabled-color"
+                                                                                aria-label="Default select example"
+                                                                                name="categoryId" id="parentCategory"
+                                                                                required>
+                                                                                <option selected value="">Options
+                                                                                </option>
+                                                                                {{#each categories}}
+                                                                                    <option value="{{this._id}}">
+                                                                                        {{this.subCategory}}</option>
+                                                                                {{/each}}
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label for="recipient-name"
+                                                                                class="col-form-label">Quantity
+                                                                            </label>
+                                                                            <input type="text" class="form-control"
+                                                                                placeholder="Enter Quantity" name="size"
+                                                                                required />
+                                                                        </div>
+                                                                    </form> --}}
+
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">Close</button>
+                                                                    <button type="submit" class="btn btn-primary" >Save
+                                                                        changes</button>
+                                                                </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    {{#if this.active}}
+                                                        <a href="/admin/product-unlist/{{this._id}}"
+                                                            class="text-danger"> Unlist</a>
+                                                    {{else}}
+                                                        <a href="/admin/product-list/{{this._id}}" class="text-success">
+                                                            list</a>
+                                                    {{/if}}
+
+                                                </td>
+
+                                                <td>
+
+                                                    <span><a href="/admin/edit-product/{{this._id}}" class="mr-4"
+                                                            data-placement="top" title="Edit"><i
+                                                                class="fa fa-edit color-muted"></i> </a>
+                                                        <a href="javascript:void()" data-toggle="modal"
+                                                            data-target="#exampleModal2{{this._id}}"
+                                                            data-placement="top" title="Delete"><i
+                                                                class="fa fa-trash color-danger"></i></a></span>
+                                                                
+                                                </td>
+                                            </tr>
+
+                                            {{!-- delete --}}
+                                            <div class="modal fade" id="exampleModal2{{this._id}}" tabindex="-1"
+                                                aria-labelledby="exampleModalLabel2{{this._id}}" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel2{{this._id}}">
+                                                                Delete Product </h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Are you sure? you want permanently to delete the
+                                                            "{{this.title}}"
+
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-light"
+                                                                data-dismiss="modal">Close</button>
+                                                            <a href="/admin/delete-product/{{this._id}}/{{this.image.[0].cloudinary_id}}/{{this.image.[1].cloudinary_id}}/{{this.image.[2].cloudinary_id}}"
+                                                                type="button" class="btn btn-danger">
+
+                                                                Delete
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {{/each}}
+
+
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Image</th>
+                                            <th>Product</th>
+                                            <th>Price</th>
+                                            <th>Brand</th>
+                                            <th>Category</th>
+                                            <th>Published</th>
+                                            <th>Stock</th>
+                                            <th>List/Unlist</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- end basic table  -->
+                <!-- ============================================================== -->
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- end data table  -->
+            <!-- ============================================================== -->
+        </div>
+       
+
+
+
+
+
+        <!-- ============================================================== -->
+        <!-- footer -->
+        <!-- ============================================================== -->
+        <div class="footer">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                        Copyright © 2022 Concept. All rights reserved. Dashboard by <a href="/">Reflection</a>.
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                        <div class="text-md-right footer-links d-none d-sm-block">
+                            <a href="javascript: void(0);">About</a>
+                            <a href="javascript: void(0);">Support</a>
+                            <a href="javascript: void(0);">Contact Us</a>
+                        </div>
+                    </div>
+                </div>.
+            </div>
+        </div>
+        <!-- ============================================================== -->
+        <!-- end footer -->
+        <!-- ============================================================== -->
+    </div>
+    <script>
+        function getAllSizes(id) {
+            fetch("/admin/v1/get-all-size-with-catogory/" + id, {
+                method: "GET",
+            }).then((response) => response.json())
+                .then((response) => {
+                    var html=""
+                    for(var i=0; i<response.length;i++){
+                         html+='<tr><th scope="row">'+response[i].size+'<input type="text" name="sizeId" value="'+response[i]._id+'" hidden /></th> <td><div class="form-group"><input type="number" class="form-control" placeholder="Enter Quantity" name="quantity" required /></div></td> </tr>'
+                    }
+                
+                     document.getElementById("allSize"+id).innerHTML=html                                                                
+
+
+
+                })
+        }
+    </script>
+
+    <!-- ============================================================== -->
+    <!-- end main wrapper -->
+    <!-- ============================================================== -->
+    <!-- Optional JavaScript -->
+    {{!-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function sewty(){
+            Swal.fire(
+  'Good job!',
+  'You clicked the button!',
+  'success'
+)
+        }
+    </script> --}}
+    <script src="/assets/vendor/jquery/jquery-3.3.1.min.js"></script>
+    <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+    <script src="/assets/vendor/slimscroll/jquery.slimscroll.js"></script>
+    <script src="/assets/vendor/multi-select/js/jquery.multi-select.js"></script>
+    <script src="/assets/libs/js/main-js.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="/assets/vendor/datatables/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+    <script src="/assets/vendor/datatables/js/buttons.bootstrap4.min.js"></script>
+    <script src="/assets/vendor/datatables/js/data-table.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/rowgroup/1.0.4/js/dataTables.rowGroup.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"></script>
+
+</body>
+
+</html>

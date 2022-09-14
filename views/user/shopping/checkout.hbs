@@ -1,0 +1,762 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+
+    <meta name="generator" content="Hugo 0.84.0">
+
+
+
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+
+        :root {
+            --card-line-height: 1.2em;
+            --card-padding: 1em;
+            --card-radius: 0.5em;
+            --color-green: #000000;
+            --color-gray: #e2ebf6;
+            --color-dark-gray: #c4d1e1;
+            --radio-border-width: 2px;
+            --radio-size: 1.5em;
+        }
+
+        body {
+            background-color: #f2f8ff;
+            color: #263238;
+            font-family: 'Noto Sans', sans-serif;
+            margin: 0;
+            padding: 2em 6vw;
+        }
+
+        .grid {
+            display: grid;
+            grid-gap: var(--card-padding);
+            margin: 0 auto;
+            max-width: 60em;
+            padding: 0;
+
+            @media (min-width: 42em) {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: var(--card-radius);
+            position: relative;
+
+
+            &:hover {
+                box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.15);
+            }
+        }
+
+        .radio {
+            font-size: inherit;
+            margin: 0;
+            position: absolute;
+            right: calc(var(--card-padding) + var(--radio-border-width));
+            top: calc(var(--card-padding) + var(--radio-border-width));
+        }
+
+        @supports(-webkit-appearance: none) or (-moz-appearance: none) {
+            .radio {
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                background: #fff;
+                border: var(--radio-border-width) solid var(--color-gray);
+                border-radius: 50%;
+                cursor: pointer;
+                height: var(--radio-size);
+                outline: none;
+                transition:
+                    background 0.2s ease-out,
+                    border-color 0.2s ease-out;
+                width: var(--radio-size);
+
+                &::after {
+                    border: var(--radio-border-width) solid #fff;
+                    border-top: 0;
+                    border-left: 0;
+                    content: '';
+                    display: block;
+                    height: 0.75rem;
+                    left: 25%;
+                    position: absolute;
+                    top: 50%;
+                    transform:
+                        rotate(45deg) translate(-50%, -50%);
+                    width: 0.375rem;
+                }
+
+                &:checked {
+                    background: var(--color-green);
+                    border-color: var(--color-green);
+                }
+            }
+
+            .card:hover .radio {
+                border-color: var(--color-dark-gray);
+
+                &:checked {
+                    border-color: var(--color-green);
+                }
+            }
+        }
+
+        .plan-details {
+            border: var(--radio-border-width) solid var(--color-gray);
+            border-radius: var(--card-radius);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            padding: var(--card-padding);
+            transition: border-color 0.2s ease-out;
+        }
+
+        .card:hover .plan-details {
+            border-color: var(--color-dark-gray);
+        }
+
+        .radio:checked~.plan-details {
+            border-color: var(--color-green);
+        }
+
+        .radio:focus~.plan-details {
+            box-shadow: 0 0 0 2px var(--color-dark-gray);
+        }
+
+        .radio:disabled~.plan-details {
+            color: var(--color-dark-gray);
+            cursor: default;
+        }
+
+        .radio:disabled~.plan-details .plan-type {
+            color: var(--color-dark-gray);
+        }
+
+        .card:hover .radio:disabled~.plan-details {
+            border-color: var(--color-gray);
+            box-shadow: none;
+        }
+
+        .card:hover .radio:disabled {
+            border-color: var(--color-gray);
+        }
+
+        .plan-type {
+            color: var(--color-green);
+            font-size: 1.5rem;
+            font-weight: bold;
+            line-height: 1em;
+        }
+
+        .plan-cost {
+            font-size: 2.5rem;
+            font-weight: bold;
+            padding: 0.5rem 0;
+        }
+
+        .slash {
+            font-weight: normal;
+        }
+
+        .plan-cycle {
+            font-size: 2rem;
+            font-variant: none;
+            border-bottom: none;
+            cursor: inherit;
+            text-decoration: none;
+        }
+
+        .hidden-visually {
+            border: 0;
+            clip: rect(0, 0, 0, 0);
+            height: 1px;
+            margin: -1px;
+            overflow: hidden;
+            padding: 0;
+            position: absolute;
+            white-space: nowrap;
+            width: 1px;
+        }
+    </style>
+
+
+    <!-- Custom styles for this template -->
+    <link href="form-validation.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+    <div class="container">
+        <main>
+
+            <div class="row g-5">
+                <div class="col-md-5 col-lg-4 order-md-last">
+                    <h4 class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-primary">Your cart</span>
+                        <span class="badge bg-primary rounded-pill">3</span>
+                    </h4>
+                    <ul class="list-group mb-3">
+                        {{#each userCart}}
+                            <li class="list-group-item d-flex justify-content-between lh-sm">
+                                <div>
+                                    <h6 class="my-0">{{this.cartItems.title}}</h6>
+                                    <small class="text-muted">size {{this.productSize.size}} x
+                                        {{this.products.count}}</small>
+                                </div>
+                                <span class="text-muted">&#8377; {{this.eachTotal}}</span>
+                            </li>
+                        {{/each}}
+                        {{!-- <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div>
+                                <h6 class="my-0">Second product</h6>
+                                <small class="text-muted">Brief description</small>
+                            </div>
+                            <span class="text-muted">$8</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div>
+                                <h6 class="my-0">Third item</h6>
+                                <small class="text-muted">Brief description</small>
+                            </div>
+                            <span class="text-muted">$5</span>
+                        </li> --}}
+                        <li class="list-group-item d-flex justify-content-between bg-light">
+                            <div class="text-success">
+                                <h6 class="my-0">Promo code</h6>
+                                <small>EXAMPLECODE</small>
+                            </div>
+                            <span class="text-success">−&#8377; 5</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Total (USD)</span>
+                            <strong>&#8377; {{totalPrice.[0].subTotal}}</strong>
+                        </li>
+                    </ul>
+
+                    {{!-- <form class="card p-2">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Promo code">
+                            <button
+                                class="flex-c-m stext-101 cl0 size-101 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">Redeem</button>
+                        </div>
+                    </form> --}}
+                </div>
+                <div class="col-md-7 col-lg-8">
+                    <h4 class="mb-3">Delivery address</h4>
+                    <form id="checkoutFormSubmission123" method="post">
+                        {{!-- <div class="row g-3">
+            <div class="col-sm-6">
+              <label for="firstName" class="form-label">First name</label>
+              <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+              <div class="invalid-feedback">
+                Valid first name is required.
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <label for="lastName" class="form-label">Last name</label>
+              <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
+              <div class="invalid-feedback">
+                Valid last name is required.
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label for="username" class="form-label">Username</label>
+              <div class="input-group has-validation">
+                <span class="input-group-text">@</span>
+                <input type="text" class="form-control" id="username" placeholder="Username" required>
+              <div class="invalid-feedback">
+                  Your username is required.
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label for="email" class="form-label">Email <span class="text-muted">(Optional)</span></label>
+              <input type="email" class="form-control" id="email" placeholder="you@example.com">
+              <div class="invalid-feedback">
+                Please enter a valid email address for shipping updates.
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label for="address" class="form-label">Address</label>
+              <input type="text" class="form-control" id="address" placeholder="1234 Main St" required>
+              <div class="invalid-feedback">
+                Please enter your shipping address.
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label for="address2" class="form-label">Address 2 <span class="text-muted">(Optional)</span></label>
+              <input type="text" class="form-control" id="address2" placeholder="Apartment or suite">
+            </div>
+
+            <div class="col-md-5">
+              <label for="country" class="form-label">Country</label>
+              <select class="form-select" id="country" required>
+                <option value="">Choose...</option>
+                <option>United States</option>
+              </select>
+              <div class="invalid-feedback">
+                Please select a valid country.
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <label for="state" class="form-label">State</label>
+              <select class="form-select" id="state" required>
+                <option value="">Choose...</option>
+                <option>California</option>
+              </select>
+              <div class="invalid-feedback">
+                Please provide a valid state.
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <label for="zip" class="form-label">Zip</label>
+              <input type="text" class="form-control" id="zip" placeholder="" required>
+              <div class="invalid-feedback">
+                Zip code required.
+              </div>
+            </div>
+          </div> --}}
+
+                        <div class="grid">
+
+                            {{#each addresses}}
+                                <label class="card">
+                                    <input name="address" class="radio" type="radio" value={{this.address_id}} checked>
+
+                                    <span class="plan-details">
+                                        {{!-- <span class="plan-type">Basic</span> --}}
+
+                                        {{!-- <span class="plan-cost">$0<span class="slash">/</span><abbr class="plan-cycle"
+                                                title="month">mo</abbr></span>  --}}
+                                        <span><span style="text-transform: uppercase;">{{this.firstName}}
+                                                {{this.lastName}}</span></span>
+                                        {{!-- <span>Email:{{this.email}}, Phone Number:{{this.phoneNumber}}</span> --}}
+                                        <span>{{this.address}},{{this.state}},{{this.country}},{{this.zip}}....</span>
+                                        {{!-- <span>1 concurrent build</span> --}}
+                                        <div class="d-flex justify-content-end ">
+                                            <a style="color: #007bff;" data-bs-toggle="modal"
+                                                data-bs-target="#exampleModalForAddress{{this.address_id}}"
+                                                onclick="getAllCountries('{{this.address_id}}')">Edit Address</a>
+
+                                        </div>
+                                    </span>
+                                </label>
+
+
+
+
+
+
+                                {{!-- <div class="modal fade" id="exampleModalForAddress{{this.address_id}}" tabindex="-1"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <form action="/v1/add-user-address/{{this.address_id}}" method="post" id="updateAddress{{this.address_id}}" name="kygkgv">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Address</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row g-3">
+                                            <div class="col-sm-6">
+                                                <label for="firstName" class="form-label">First name</label>
+                                                <input type="text" class="form-control" id="firstName" placeholder=""
+                                                    value="{{this.firstName}}" required name="firstName">
+                                                <div class="invalid-feedback">
+                                                    Valid first name is required.
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-6">
+                                                <label for="lastName" class="form-label">Last name</label>
+                                                <input type="text" class="form-control" id="lastName" placeholder=""
+                                                    value="{{this.lastName}}" required name="lastName">
+                                                <div class="invalid-feedback">
+                                                    Valid last name is required.
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="phoneNumber" class="form-label">Phone Number <span
+                                                        class="text-muted" ></span></label>
+                                                <input type="tel" class="form-control" id="addressPhoneNumber"
+                                                    placeholder="Phone Number" value="{{this.phoneNumber}}" name="phoneNumber" required>
+                                            </div>
+
+
+
+                                            <div class="col-12">
+                                                <label for="email" class="form-label">Email <span
+                                                        class="text-muted">(Optional)</span></label>
+                                                <input type="email" class="form-control" id="email"
+                                                    placeholder="you@example.com" name="email" value="{{this.email}}">
+                                                <div class="invalid-feedback">
+                                                    Please enter a valid email address for shipping updates.
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12">
+                                                <label for="address" class="form-label">Address</label>
+                                                <input type="text" class="form-control" id="address"
+                                                    placeholder="1234 Main St" required name="address" value="{{this.address}}">
+                                                <div class="invalid-feedback" >
+                                                    Please enter your shipping address.
+                                                </div>
+                                            </div>
+
+                                            
+
+                                            <div class="col-md-5">
+                                                <label for="country" class="form-label">Country</label>
+                                                <select class="form-select"  required name="country"
+                                                     id="countryList{{this.address_id}}" onchange="changeCountryList('{{this.address_id}}')">
+                                                  
+                                                </select>
+                                                <div class="invalid-feedback">
+                                                    Please select a valid country.
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label for="state" class="form-label">State</label>
+                                                <select class="form-select" id="stateList{{this.address_id}}" name="state" required>
+                                                    
+                                                </select>
+                                                <div class="invalid-feedback">
+                                                    Please provide a valid state.
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label for="zip" class="form-label">Zip</label>
+                                                <input type="text" class="form-control" id="zip" placeholder="" name="zip" value="{{this.zip}}"
+                                                    required>
+                                                <div class="invalid-feedback">
+                                                    Zip code required.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a type="button"
+                                            class="flex-c-m stext-101 cl0 size-101 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer text-light"
+                                            data-bs-dismiss="modal">Close</a>
+                                        <input type="submit"
+                                            class="flex-c-m stext-101 cl0 size-101 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer text-light" value="Add Address">
+                                    </div>
+                                </div>
+                                </form>
+                            </div>
+                        </div>                --}}
+                            {{/each}}
+
+                            <div class="d-flex justify-content-center ">
+                                <a class="flex-c-m stext-101 cl0 size-101 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer text-light"
+                                    data-bs-toggle="modal" data-bs-target="#exampleModalForAddress"
+                                    onclick="getAllCountries()">Add
+                                    New Address</a>
+
+                            </div>
+
+
+
+                        </div>
+
+
+
+
+
+
+                        <hr class="my-4">
+
+                        {{!-- <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="same-address" name="same-address">
+                            <label class="form-check-label" for="same-address">Shipping address is the same as my
+                                billing address</label>
+                        </div>
+
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="save-info" name="save-info">
+                            <label class="form-check-label" for="save-info">Save this information for next time</label>
+                        </div>
+
+                        <hr class="my-4"> --}}
+                        
+
+                        <h4 class="mb-3">Payment method</h4>
+                        
+
+
+                        <div class="my-3">
+                            <div class="d-flex justify-content-start">
+                                <label class="card">
+                                    <input name="payment" class="radio" type="radio" value="COD" checked>
+
+                                    <span class="plan-details">
+                                    COD
+                                        
+                                    </span>
+                                </label>
+                                <label class="card">
+                                    <input name="payment" class="radio" type="radio" value="online" required>
+
+                                    <span class="plan-details">
+                                    <img src="/images/razorpay-icon.png" alt="" width="62px" height="22px">
+                                        
+                                    </span>
+                                </label>
+                                <label class="card">
+                                    <input name="payment" class="radio" type="radio" value="card" required>
+
+                                    <span class="plan-details">
+                                    <img src="/images/credit-card.png" alt="" width="40px" height="22px">
+                                        
+                                    </span>
+                                </label>
+                                
+
+                            </div>
+                             
+                            {{!-- <div class="form-check">
+                            <input type="radio" class="form-check-input" id="same-address" name="same-address">
+
+                                <input id="credit" name="paymentMethod" type="radio"  checked >
+                                <label class="form-check-label" for="credit">Credit card</label>
+                            </div>
+                            <div class="form-check">
+                                <input id="debit" name="paymentMethod" type="radio" class="form-check-input">
+                                <label class="form-check-label" for="debit">Debit card</label>
+                            </div>
+                            <div class="form-check">
+                                <input id="paypal" name="paymentMethod" type="radio" class="form-check-input">
+                                <label class="form-check-label" for="paypal">PayPal</label>
+                            </div> --}}
+                        </div>
+
+                        {{!-- <div class="row gy-3">
+                            <div class="col-md-6">
+                                <label for="cc-name" class="form-label">Name on card</label>
+                                <input type="text" class="form-control" id="cc-name" placeholder="" name="cc-name">
+                                <small class="text-muted">Full name as displayed on card</small>
+                                <div class="invalid-feedback">
+                                    Name on card is required
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="cc-number" class="form-label">Credit card number</label>
+                                <input type="text" class="form-control" id="cc-number" placeholder="" required>
+                                <div class="invalid-feedback">
+                                    Credit card number is required
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="cc-expiration" class="form-label">Expiration</label>
+                                <input type="text" class="form-control" id="cc-expiration" placeholder="" required>
+                                <div class="invalid-feedback">
+                                    Expiration date required
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="cc-cvv" class="form-label">CVV</label>
+                                <input type="text" class="form-control" id="cc-cvv" placeholder="" required>
+                                <div class="invalid-feedback">
+                                    Security code required
+                                </div>
+                            </div>
+                        </div> --}}
+
+                        <hr class="my-4">
+
+                        <button  type="submit"
+                            class="flex-c-m stext-101 cl0 size-101 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer"
+                            id="formCheckOutButton123" >
+                            Place Order</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+
+        <footer class="my-5 pt-5 text-muted text-center text-small">
+            <p class="mb-1">&copy; 2017–2021 Company Name</p>
+            <ul class="list-inline">
+                <li class="list-inline-item"><a href="#">Privacy</a></li>
+                <li class="list-inline-item"><a href="#">Terms</a></li>
+                <li class="list-inline-item"><a href="#">Support</a></li>
+            </ul>
+        </footer>
+    </div>
+
+    <div class="modal fade" id="exampleModalForAddress" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <form action="/v1/add-user-address" method="post">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Address</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <div class="col-sm-6">
+                                <label for="firstName" class="form-label">First name</label>
+                                <input type="text" class="form-control" id="firstName" placeholder="" value="" required
+                                    name="firstName">
+                                <div class="invalid-feedback">
+                                    Valid first name is required.
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label for="lastName" class="form-label">Last name</label>
+                                <input type="text" class="form-control" id="lastName" placeholder="" value="" required
+                                    name="lastName">
+                                <div class="invalid-feedback">
+                                    Valid last name is required.
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <label for="phoneNumber" class="form-label">Phone Number <span
+                                        class="text-muted"></span></label>
+                                <input type="tel" class="form-control" id="addressPhoneNumber"
+                                    placeholder="Phone Number" name="phoneNumber" required>
+                            </div>
+
+
+
+                            <div class="col-12">
+                                <label for="email" class="form-label">Email <span
+                                        class="text-muted">(Optional)</span></label>
+                                <input type="email" class="form-control" id="email" placeholder="you@example.com"
+                                    name="email">
+                                <div class="invalid-feedback">
+                                    Please enter a valid email address for shipping updates.
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <label for="address" class="form-label">Address</label>
+                                <input type="text" class="form-control" id="address" placeholder="1234 Main St" required
+                                    name="address">
+                                <div class="invalid-feedback">
+                                    Please enter your shipping address.
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-md-5">
+                                <label for="country" class="form-label">Country</label>
+                                <select class="form-select" required name="country" id="countryList"
+                                    onchange="changeCountryList()">
+                                    {{!-- <option>United States</option> --}}
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select a valid country.
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="state" class="form-label">State</label>
+                                <select class="form-select" id="stateList" name="state" required>
+                                    {{!-- <option value="">Choose...</option> --}}
+                                    {{!-- <option>California</option> --}}
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please provide a valid state.
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="zip" class="form-label">Zip</label>
+                                <input type="text" class="form-control" id="zip" placeholder="" name="zip" required>
+                                <div class="invalid-feedback">
+                                    Zip code required.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a type="button"
+                            class="flex-c-m stext-101 cl0 size-101 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer text-light"
+                            data-bs-dismiss="modal">Close</a>
+                        <input type="submit"
+                            class="flex-c-m stext-101 cl0 size-101 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer text-light"
+                            value="Add Address">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+<script>
+    const formCheckOut123 = document.getElementById("checkoutFormSubmission123")
+const formCheckOutButton123 = document.getElementById("formCheckOutButton123");
+
+
+  formCheckOutButton123.addEventListener("click", (e) => {
+    let id = e.target.getAttribute("data-id");
+    submitCheckOutForm(e, id);
+  });
+
+
+async function submitCheckOutForm(e) {
+  console.log("sdfcsda")
+  e.preventDefault();
+  let formData = new FormData(formCheckOut123);
+  dataToSend = Object.fromEntries(formData);
+  console.log(dataToSend);
+   await fetch('/v1/checkout-user', {
+    method: "POST",
+    body: JSON.stringify(dataToSend),
+    headers: {
+      "Content-Type": "application/json",
+    },
+   }).then(response => response.json())
+     .then(response => { console.log('success', response)})
+}
+
+</script>
+
+    {{!-- <script src="../assets/dist/js/bootstrap.bundle.min.js"></script> --}}
+
+    {{!-- <script src="form-validation.js"></script> --}}
+    {{!-- <script src="/javascripts/script.js"> --}}
+    
+
+    {{!-- </script> --}}
+</body>
+
+</html>

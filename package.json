@@ -1,0 +1,30 @@
+{
+  "name": "project-e-commerce",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "nodemon ./bin/www"
+  },
+  "dependencies": {
+    "@handlebars/allow-prototype-access": "^1.0.5",
+    "bcrypt": "^5.0.1",
+    "cloudinary": "^1.30.1",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "dotenv": "^16.0.1",
+    "express": "~4.16.1",
+    "express-formidable": "^1.2.0",
+    "express-handlebars": "^6.0.6",
+    "express-session": "^1.17.3",
+    "express-validator": "^6.14.2",
+    "hbs": "^4.2.0",
+    "http-errors": "~1.6.3",
+    "mongoose": "^6.5.2",
+    "morgan": "~1.9.1",
+    "multer": "^1.4.5-lts.1",
+    "twilio": "^3.80.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
+}

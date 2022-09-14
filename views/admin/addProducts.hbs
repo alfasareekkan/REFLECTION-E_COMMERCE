@@ -1,0 +1,480 @@
+
+<html lang="en">
+
+<head>
+    <style>
+        .profile-pic-wrapper {
+            height: 100vh;
+            width: 100%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .pic-holder {
+            text-align: center;
+            position: relative;
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .pic-holder .pic {
+            height: 100%;
+            width: 100%;
+            -o-object-fit: cover;
+            object-fit: cover;
+            -o-object-position: center;
+            object-position: center;
+        }
+
+        .pic-holder .upload-file-block,
+        .pic-holder .upload-loader {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background-color: rgba(90, 92, 105, 0.7);
+            color: #f8f9fc;
+            font-size: 12px;
+            font-weight: 600;
+            opacity: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .pic-holder .upload-file-block {
+            cursor: pointer;
+        }
+
+        .pic-holder:hover .upload-file-block,
+        .uploadProfileInput:focus~.upload-file-block {
+            opacity: 1;
+        }
+
+        .pic-holder.uploadInProgress .upload-file-block {
+            display: none;
+        }
+
+        .pic-holder.uploadInProgress .upload-loader {
+            opacity: 1;
+        }
+
+        /* Snackbar css */
+        .snackbar {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 2px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            bottom: 30px;
+            font-size: 14px;
+            transform: translateX(-50%);
+        }
+
+        .snackbar.show {
+            visibility: visible;
+            -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        @-webkit-keyframes fadein {
+            from {
+                bottom: 0;
+                opacity: 0;
+            }
+
+            to {
+                bottom: 30px;
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadein {
+            from {
+                bottom: 0;
+                opacity: 0;
+            }
+
+            to {
+                bottom: 30px;
+                opacity: 1;
+            }
+        }
+
+        @-webkit-keyframes fadeout {
+            from {
+                bottom: 30px;
+                opacity: 1;
+            }
+
+            to {
+                bottom: 0;
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeout {
+            from {
+                bottom: 30px;
+                opacity: 1;
+            }
+
+            to {
+                bottom: 0;
+                opacity: 0;
+            }
+        }
+    </style>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/assets/vendor/bootstrap/css/bootstrap.min.css">
+    <link href="/assets/vendor/fonts/circular-std/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/libs/css/style.css">
+    <link rel="stylesheet" href="/assets/vendor/fonts/fontawesome/css/fontawesome-all.css">
+    <link rel="stylesheet" href="/assets/vendor/charts/chartist-bundle/chartist.css">
+    <link rel="stylesheet" href="/assets/vendor/charts/morris-bundle/morris.css">
+    <link rel="stylesheet" href="/assets/vendor/fonts/material-design-iconic-font/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="/assets/vendor/charts/c3charts/c3.css">
+    <link rel="stylesheet" href="/assets/vendor/fonts/flag-icon-css/flag-icon.min.css">
+    <title>ems</title>
+</head>
+
+<body>
+    <!-- ============================================================== -->
+    <!-- main wrapper -->
+    <!-- ============================================================== -->
+
+    <!-- ============================================================== -->
+    <!-- navbar -->
+    <!-- ============================================================== -->
+
+    <!-- ============================================================== -->
+    <!-- end left sidebar -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- wrapper  -->
+    <!-- ============================================================== -->
+    <div class="dashboard-wrapper">
+        <div class="container-fluid  dashboard-content">
+            <!-- ============================================================== -->
+            <!-- pageheader -->
+            <!-- ============================================================== -->
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="page-header">
+                        <h2 class="pageheader-title">Add Product</h2>
+                        <p class="pageheader-text">Lorem ipsum dolor sit amet..</p>
+                        <div class="page-breadcrumb">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+
+                                    <li class="breadcrumb-item"><a href="/admin/products"
+                                            class="breadcrumb-link">Products</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Add Product</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- end pageheader -->
+
+
+
+
+
+            <div class="row page-titles mx-0">
+                <div class="col-sm-6 p-md-0">
+                    <div class="welcome-text">
+                        <h4></h4>
+                        <p class="mb-3"></p>
+                    </div>
+                </div>
+                <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                    <ol class="breadcrumb">
+                        <a href="/admin/products">
+                            <button type="button" class="btn btn-primary">View Products</button></a>
+                    </ol>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+
+            <div class="row">
+                <!-- ============================================================== -->
+                <!-- validation form -->
+                <!-- ============================================================== -->
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="card">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"></div>
+                        <h5 class="card-header">Add Product</h5>
+
+                        <div class="card-body">
+                            <form class="needs-validation" method="post" action="/admin/add-products" enctype="multipart/form-data">
+                                <div class="row">
+
+
+
+
+
+
+
+
+
+
+                                    <div class="col-xl-6 col-lg-4 col-md-12 col-sm-12 col-12 ">
+                                        <label for="validationCustom01">Title</label>
+                                        <input type="text" class="form-control" id="validationCustom01"
+                                            placeholder="Title" required name="title">
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                    </div>
+
+
+
+
+
+
+                                    <div class="form-row">
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 mb-2">
+                                            <label for="validationCustom02">Parent Category</label>
+
+                                            <select class="form-control" name="parentCategory" id="contry">
+                                                
+                                                <option>Choose options</option>
+                                                {{#each parent}}
+                                                <option value="{{this._id}}">{{this.parentCategory}}</option>
+                                                {{/each}}
+                                            
+                                            </select>
+
+                                            <div class="valid-feedback">
+                                                Looks good!
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 mb-2">
+                                            <label for="validationCustom02">category</label>
+
+                                            <select class="form-control" name="categoryId" id="state">
+                                                <option>Choose category </option>
+                                               
+
+                                            </select>
+
+                                            <div class="valid-feedback">
+                                                Looks good!
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 mb-2">
+                                            <label for="validationCustom02">brand</label>
+
+                                            <select class="form-control" id="input-select" name="brandId">
+                                                <option>Choose brand</option>
+                                                {{#each brand}}
+
+                                                <option value="{{this._id}}">{{this.brandName}}</option>
+                                                {{/each}}
+                                            
+
+                                            </select>
+
+                                            <div class="valid-feedback">
+                                                Looks good!
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-row">
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 mb-2">
+                                            <label for="validationCustom02">Description</label>
+                                            <textarea rows="4" cols="50" name="description"  class="form-control" placeholder="Type here......" id="description">
+</textarea>
+                                            <div class="valid-feedback">
+                                                Looks good!
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 mb-2">
+                                            <label for="validationCustom02">Price</label>
+                                            <input type="number" class="form-control" id="validationCustom02"
+                                                placeholder="price" value="" name="price" required>
+                                            <div class="valid-feedback">
+                                                Looks good!
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    
+                                    
+                                    
+                                    <div class="form-row">
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 mb-2">
+                                            <label for="validationCustom02">Image 1</label>
+                                            <input type="file" class="form-control" id="validationCustom02"
+                                                placeholder="" value="" name="image" onchange="changeImage1(event)">
+                                            <img src="" alt="" id="imageView1" width="100px" height="75px">
+                                            <div class="valid-feedback">
+                                                Looks good!
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 mb-2">
+                                            <label for="validationCustom02">Image 2</label>
+                                            <input type="file" class="form-control" id="validationCustom02"
+                                                placeholder="visa" value="" name="image"
+                                                onchange="changeImage2(event)">
+                                            <img src="" alt="" id="imageView2" width="100px" height="75px">
+                                            <div class="valid-feedback">
+                                                Looks good!
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 mb-4">
+                                            <label for="validationCustom02">Image 3</label>
+
+                                            <input type="file" class="form-control" placeholder="emirates" value=""
+                                                name="image" onchange="changeImage3(event)">
+                                            <img src="" alt="" id="imageView3" width="100px" height="75px">
+                                            <div class="valid-feedback">
+                                                Looks good!
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+
+
+
+
+
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
+                                            <button class="btn btn-primary" type="submit">Submit form</button>
+                                        </div>
+                                    </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- end validation form -->
+                <!-- ============================================================== -->
+            </div>
+
+
+        </div>
+        <!-- ============================================================== -->
+        <!-- footer -->
+        <!-- ============================================================== -->
+        <div class="footer">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                        Copyright © 2022 Concept. All rights reserved. by <a
+                            href="/">Reflection</a>.
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                        <div class="text-md-right footer-links d-none d-sm-block">
+                            <a href="javascript: void(0);">About</a>
+                            <a href="javascript: void(0);">Support</a>
+                            <a href="javascript: void(0);">Contact Us</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ============================================================== -->
+        <!-- end footer -->
+        <!-- ============================================================== -->
+    </div>
+
+    <script>
+        function changeImage1(event) {
+            document.getElementById('imageView1').src = URL.createObjectURL(event.target.files[0])
+        }
+        function changeImage2(event) {
+            document.getElementById('imageView2').src = URL.createObjectURL(event.target.files[0])
+        }
+        function changeImage3(event) {
+            document.getElementById('imageView3').src = URL.createObjectURL(event.target.files[0])
+        }
+
+        function _(element){
+            return document.getElementById(element)
+        }
+        function fetch_data(parent_element,chiled_element,type){
+            fetch('/admin/get_data?type='+type+'&parent_value='+parent_element.value+'')
+            .then((response)=>{
+               
+                return response.json()
+
+            })
+            .then((responseData)=>{
+                console.log(responseData)
+                var html ='';
+                if(type=='load_state'){
+                    html='<option value="">slect category</option>';
+
+                }
+                for(var i=0; i<responseData.length;i++){
+                    console.log(responseData[i]._id)
+                    html+='<option value="'+responseData[i]._id+'">'+responseData[i].subCategory+'</option>'
+                }
+                chiled_element.innerHTML=html
+
+
+            })
+
+        }
+        _('contry').onchange=function(){
+            console.log(_('contry').value)
+            fetch_data(_('contry'),_('state'),'load_state')
+        }
+
+    </script>
+
+
+    <!-- ============================================================== -->
+    <!-- end main wrapper  -->
+    <!-- ============================================================== -->
+    <!-- Optional JavaScript -->
+    <!-- jquery 3.3.1 -->
+    <script src="/assets/vendor/jquery/jquery-3.3.1.min.js"></script>
+    <!-- bootstap bundle js -->
+    <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+    <!-- slimscroll js -->
+    <script src="/assets/vendor/slimscroll/jquery.slimscroll.js"></script>
+    <!-- main js -->
+    <script src="/assets/libs/js/main-js.js"></script>
+    <!-- chart chartist js -->
+    <script src="/assets/vendor/charts/chartist-bundle/chartist.min.js"></script>
+    <!-- sparkline js -->
+    <script src="/assets/vendor/charts/sparkline/jquery.sparkline.js"></script>
+    <!-- morris js -->
+    <script src="/assets/vendor/charts/morris-bundle/raphael.min.js"></script>
+    <script src="/assets/vendor/charts/morris-bundle/morris.js"></script>
+    <!-- chart c3 js -->
+    <script src="/assets/vendor/charts/c3charts/c3.min.js"></script>
+    <script src="/assets/vendor/charts/c3charts/d3-5.4.0.min.js"></script>
+    <script src="/assets/vendor/charts/c3charts/C3chartjs.js"></script>
+    <script src="/assets/libs/js/dashboard-ecommerce.js"></script>
+    <script src="/assets/libs/js/file.js"></script>
+</body>
+
+</html>

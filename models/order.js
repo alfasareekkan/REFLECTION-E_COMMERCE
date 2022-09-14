@@ -5,16 +5,29 @@ const orderSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId
     },
     products: {
-        type:Array
+        type: Array
     },
-    address: {
-        type:Object
+    deliveryAddress: {
+        type: Object
     },
-    amount: {
+    totalAmount: {
         type: Numbers,
         
     },
-    status: {
+    coupon: {
+        code: String,
+        discount: Number
+    },
+    subTotal: {
+        type: Number
+    },
+    paymentType:{
+        type:String
+    },
+    paymentStatus: {
+        type: Boolean,
+    },
+    orderStatus: {
         type: String,
         enum: [
             "pending",

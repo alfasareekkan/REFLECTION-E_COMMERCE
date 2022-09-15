@@ -11,7 +11,7 @@ const orderSchema = new mongoose.Schema({
         type: Object
     },
     totalAmount: {
-        type: Numbers,
+        type: Number,
         
     },
     coupon: {
@@ -26,11 +26,12 @@ const orderSchema = new mongoose.Schema({
     },
     paymentStatus: {
         type: Boolean,
+        default: false
     },
     orderStatus: {
         type: String,
         enum: [
-            "pending",
+            "Pending",
             "Confirmed",
             "Shipped",
             "Delivered",
@@ -42,4 +43,6 @@ const orderSchema = new mongoose.Schema({
 
 
     
-},{ timestamps:true,collection:"order"})
+}, { timestamps: true, collection: "order" })
+
+module.exports=mongoose.model("order",orderSchema)

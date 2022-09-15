@@ -512,10 +512,10 @@
                         </div>
 
                         <hr class="my-4"> --}}
-                        
+
 
                         <h4 class="mb-3">Payment method</h4>
-                        
+
 
 
                         <div class="my-3">
@@ -524,30 +524,30 @@
                                     <input name="payment" class="radio" type="radio" value="COD" checked>
 
                                     <span class="plan-details">
-                                    COD
-                                        
+                                        COD
+
                                     </span>
                                 </label>
                                 <label class="card">
                                     <input name="payment" class="radio" type="radio" value="online" required>
 
                                     <span class="plan-details">
-                                    <img src="/images/razorpay-icon.png" alt="" width="62px" height="22px">
-                                        
+                                        <img src="/images/razorpay-icon.png" alt="" width="62px" height="22px">
+
                                     </span>
                                 </label>
                                 <label class="card">
                                     <input name="payment" class="radio" type="radio" value="card" required>
 
                                     <span class="plan-details">
-                                    <img src="/images/credit-card.png" alt="" width="40px" height="22px">
-                                        
+                                        <img src="/images/credit-card.png" alt="" width="40px" height="22px">
+
                                     </span>
                                 </label>
-                                
+
 
                             </div>
-                             
+
                             {{!-- <div class="form-check">
                             <input type="radio" class="form-check-input" id="same-address" name="same-address">
 
@@ -601,9 +601,9 @@
 
                         <hr class="my-4">
 
-                        <button  type="submit"
+                        <button type="submit"
                             class="flex-c-m stext-101 cl0 size-101 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer"
-                            id="formCheckOutButton123" >
+                            id="formCheckOutButton123">
                             Place Order</button>
                     </form>
                 </div>
@@ -721,42 +721,58 @@
             </form>
         </div>
     </div>
-<script>
-    const formCheckOut123 = document.getElementById("checkoutFormSubmission123")
-const formCheckOutButton123 = document.getElementById("formCheckOutButton123");
+    <script>
+
+        const formCheckOut123 = document.getElementById("checkoutFormSubmission123")
+        const formCheckOutButton123 = document.getElementById("formCheckOutButton123");
 
 
-  formCheckOutButton123.addEventListener("click", (e) => {
-    let id = e.target.getAttribute("data-id");
-    submitCheckOutForm(e, id);
-  });
+        formCheckOutButton123.addEventListener("click", (e) => {
+            let id = e.target.getAttribute("data-id");
+            submitCheckOutForm(e, id);
+        });
 
 
-async function submitCheckOutForm(e) {
-  console.log("sdfcsda")
-  e.preventDefault();
-  let formData = new FormData(formCheckOut123);
-  dataToSend = Object.fromEntries(formData);
-  console.log(dataToSend);
-   await fetch('/v1/checkout-user', {
-    method: "POST",
-    body: JSON.stringify(dataToSend),
-    headers: {
-      "Content-Type": "application/json",
-    },
-   }).then(response => response.json())
-     .then(response => { console.log('success', response)})
-}
+        async function submitCheckOutForm(e) {
+            console.log("sdfcsda")
+            e.preventDefault();
+            let formData = new FormData(formCheckOut123);
+            dataToSend = Object.fromEntries(formData);
+            console.log(dataToSend);
+            await fetch('/v1/checkout-user', {
+                method: "POST",
+                body: JSON.stringify(dataToSend),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }).then(response => response.json())
+                .then(response => {
+                    console.log('success', response)
+                    if (response.paymentMethod === "COD") {
+                        Swal.fire({
+                            title: 'Order Placed',
+                            text: "Thankyou for shopping",
+                            icon: 'success',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'OK'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                location.href='/v1/order/invoice/'+response.orderId
+                            }
+                        })
+                    }
+                })
+        }
 
-</script>
+    </script>
 
     {{!-- <script src="../assets/dist/js/bootstrap.bundle.min.js"></script> --}}
 
     {{!-- <script src="form-validation.js"></script> --}}
     {{!-- <script src="/javascripts/script.js"> --}}
-    
 
-    {{!-- </script> --}}
+
+        { { !-- </script> --}}
 </body>
 
 </html>

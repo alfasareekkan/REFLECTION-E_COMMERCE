@@ -100,5 +100,39 @@ module.exports = {
         } catch (error) {
             console.log(error)
         }
+  },
+  findUserAddress: async (userId, addressId) => {
+    try {
+       let result = await User.aggregate([
+          {
+            $match: {
+            _id: mongoose.Types.ObjectId(userId)
+            },
+          },
+          {
+            $unwind: {
+              path:  '$addresses'
+            }
+          },
+          {
+            $match: {
+              'addresses.address_id': addressId
+            }
+          },
+          {
+            $project: {
+              email: 1,
+              phone_number: 1,
+              addresses:1
+            }
+          }
+      ])
+     return result
+    
+    } catch (error) {
+      return null
+
+    }
+    
     }
 };

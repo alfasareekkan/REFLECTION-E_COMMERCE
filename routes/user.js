@@ -8,7 +8,7 @@ const shoping = require("../controllers/shoping.js");
 const cart = require("../controllers/cartController")
 const { verifyUser } = require('../middleware/authenticationMiddleware')
 const wishlist = require('../controllers/wishlistController');
-const payment = require('../controllers/paymentController');
+const order = require('../controllers/orderController');
 // const { routes } = require("../app");
 
 
@@ -102,22 +102,21 @@ router.post('/v1/delete-product-from-wishList', verifyUser, wishlist.removeFromW
 
 
 
-//checkout and payment
+//checkout and order
 router
   .route('/v1/checkout')
-  .get(verifyUser, payment.checkoutPage)
+  .get(verifyUser, order.checkoutPage)
 
-router.post('/v1/checkout-user',(req, res) => {
-    console.log(req.body)
-    // res.status(200).json({a:true})
-    })
+router.post('/v1/checkout-user',verifyUser,order.checkOutOrder)
 
 
 
 router
   .route('/v1/add-user-address/:id?')  
-  .post(payment.addAddress)
+  .post(order.addAddress)
 
+
+ router.get('/v1/order/invoice/:id',verifyUser,order.invoice) 
 
 
 

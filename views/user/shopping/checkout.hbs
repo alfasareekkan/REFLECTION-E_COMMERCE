@@ -529,7 +529,7 @@
                                     </span>
                                 </label>
                                 <label class="card">
-                                    <input name="payment" class="radio" type="radio" value="online" required>
+                                    <input name="payment" class="radio" type="radio" value="razorPay" required>
 
                                     <span class="plan-details">
                                         <img src="/images/razorpay-icon.png" alt="" width="62px" height="22px">
@@ -721,6 +721,7 @@
             </form>
         </div>
     </div>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
 
         const formCheckOut123 = document.getElementById("checkoutFormSubmission123")
@@ -748,6 +749,8 @@
             }).then(response => response.json())
                 .then(response => {
                     console.log('success', response)
+                    console.log(response.paymentMethod)
+
                     if (response.paymentMethod === "COD") {
                         Swal.fire({
                             title: 'Order Placed',
@@ -757,7 +760,71 @@
                             confirmButtonText: 'OK'
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                location.href='/v1/order/invoice/'+response.orderId
+                                location.href = '/v1/order/invoice/' + response.orderId
+                            }
+                        })
+                    }
+                    else {
+                        
+                        startPayment(response)
+                    }
+                })
+        }
+
+        function startPayment(response) {
+            var options = {
+                "key": "rzp_test_KVaXDRTaqNFC4Y", // Enter the Key ID generated from the Dashboard
+                "amount": response.paymentDetails.subTotal, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                "currency": "INR",
+                "name": "Reflection pvtLtd",
+                "description": "Test Transaction",
+                "image": "",
+                "order_id": response.paymentDetails.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                //"callback_url": "https://eneqd3r9zrjok.x.pipedream.net/",
+                "prefill": {
+                    "name": response.orderDetails.deliveryAddress.firstName + " " + response.orderDetails.deliveryAddress.lastName,
+                    "email": response.orderDetails.deliveryAddress.email,
+                    "contact": response.orderDetails.deliveryAddress.phoneNumber
+                },
+                "notes": {
+                    "address": "Reflection pvtLtd"
+                },
+                "theme": {
+                    "color": "#3399cc"
+                },
+                "handler": function (payresponse) {
+                    verifyPayment(payresponse,response)
+                }
+            };
+            var rzp1 = new Razorpay(options);
+            rzp1.open();
+
+        }
+
+        function verifyPayment(paymentStatus,orderDetails){
+            console.log(paymentStatus,"😒😒😒😒")
+            console.log(orderDetails,"😒😒😒😒")
+
+            fetch("/v1/verify-payment",{
+                method:"POST",
+                body:JSON.stringify({paymentStatus:paymentStatus,orderDetails:orderDetails}),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }).then(response => response.json())
+                .then(response => {
+                    
+
+                    if (response.orderId) {
+                        Swal.fire({
+                            title: 'Order Placed',
+                            text: "Thankyou for shopping",
+                            icon: 'success',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'OK'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                location.href = '/v1/order/invoice/' + response.orderId
                             }
                         })
                     }
@@ -772,7 +839,6 @@
     {{!-- <script src="/javascripts/script.js"> --}}
 
 
-        { { !-- </script> --}}
 </body>
 
 </html>

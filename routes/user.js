@@ -118,7 +118,7 @@ router
 
  router.get('/v1/order/invoice/:id',verifyUser,order.invoice) 
 
-
+router.post('/v1/verify-payment',verifyUser,order.verifyPayment)
 
   
 

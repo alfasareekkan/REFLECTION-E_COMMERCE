@@ -19,7 +19,7 @@ module.exports = {
                     key2: "value2"
                 }
             }, (err, order) => {
-                if (!err) {
+                if (!err) { 
                     resolve(order);
                 }
             })

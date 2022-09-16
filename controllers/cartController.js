@@ -44,13 +44,21 @@ module.exports = {
         }
         
     },
-    displayCart: async (req, res) => {  
-        let userDetails=req.session.user
+    displayCart: async (req, res) => {
+        let userDetails = req.session.user
         let userCart = await cartServices.userCart(userDetails._id)
         let cartCount = await cartServices.cartCountHelper(userDetails._id)
-        let totalPrice= await cartServices.totalPriceHelper(userDetails._id)
+        let totalPrice = await cartServices.totalPriceHelper(userDetails._id)
+        let cartCheck
+        // cartCount===0 ?cartCount=true:
+        console.log(cartCount, "😢😢😢😢😢😢😢")
+        if (cartCount === 0||cartCount ===undefined) { 
+            cartCheck = true
+        } else {
+            cartCheck = false
+        }
         res.render('user/shopping/cart',
-            { userDetails,userCart,cartCount,totalPrice }
+            { userDetails,userCart,cartCount,totalPrice,cartCheck }
         )
     },
     incrementOrDecrementCartItemCount: async (req, res) => {

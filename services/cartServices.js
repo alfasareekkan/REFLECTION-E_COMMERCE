@@ -1,6 +1,7 @@
 const { default: mongoose } = require("mongoose");
 const Products = require("../models/product");
 const Cart = require("../models/cart");
+const { count } = require("../models/cart");
 
 module.exports = {
   createCart: async (userId, productId, productConstantId) => {
@@ -86,7 +87,8 @@ module.exports = {
     }
   },
     cartCountHelper: async (userId) => {
-    try {
+      try {
+      console.log("💕💕💕💕💕")
       let cartCount = await Cart.aggregate([
         {
           $match: { user_id: mongoose.Types.ObjectId(userId) },
@@ -99,9 +101,13 @@ module.exports = {
           },
         },
       ]);
+      console.log(cartCount[0].cartCount)
+      console.log(cartCount) 
 
       return cartCount[0].cartCount;
-    } catch (error) {}
+      } catch (error) {
+        
+    }
   },
   incrementOrDecrementCartItemCount: async ({
     cartId,

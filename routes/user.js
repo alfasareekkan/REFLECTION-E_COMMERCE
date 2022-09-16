@@ -9,6 +9,7 @@ const cart = require("../controllers/cartController")
 const { verifyUser } = require('../middleware/authenticationMiddleware')
 const wishlist = require('../controllers/wishlistController');
 const order = require('../controllers/orderController');
+const user=require('../controllers/user')
 // const { routes } = require("../app");
 
 
@@ -119,7 +120,7 @@ router
  router.get('/v1/order/invoice/:id',verifyUser,order.invoice) 
 
 router.post('/v1/verify-payment',verifyUser,order.verifyPayment)
-
+router.get('/v1/user-profile',verifyUser,user.userProfile)
   
 
 module.exports = router;

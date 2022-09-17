@@ -66,7 +66,6 @@ module.exports = {
                       };
                     //   userDetails.addresses.push(data);
                 //     }
-            console.log(addressId,"😒😒😒😒😒😒😒")
             for (var i = 0; i < userDetails.addresses.length; i++) {
                 console.log(userDetails.addresses[0],"💕💕💕💕💕💕")
 
@@ -101,7 +100,8 @@ module.exports = {
             console.log(error)
         }
   },
-  findUserAddress: async (userId, addressId) => {
+  findUserAddress: async (userId,addressId) => {
+    addressId=parseInt(addressId)
     try {
        let result = await User.aggregate([
           {
@@ -126,7 +126,8 @@ module.exports = {
               addresses:1
             }
           }
-      ])
+       ])
+      console.log(result);
      return result
     
     } catch (error) {

@@ -31,6 +31,7 @@ module.exports = {
     try {
       let addresses = req.body;
       let userId = req.session.user._id;
+      let refUrl=req.headers.referer
       // let address
       let result;
       if (req.params.id) {
@@ -43,7 +44,7 @@ module.exports = {
         result = await userServices.addUserAddress(addresses, userId);
       }
       if (result) {
-        res.redirect("/v1/checkout");
+        res.redirect(refUrl);
       }
     } catch (error) {
       res.redirect("/404error");
@@ -60,15 +61,17 @@ module.exports = {
         addresses = await userServices.findUserAddress(
           userId,
           orderDetails.address
-        );
-      order = await orderServices.createNewOrder(
+        )
+     let order = await orderServices.createNewOrder(
         userId,
         userCart,
         totalPrice,
         addresses
       );
+      console.log(order);
       if (order) {
         if (orderDetails.payment === "COD") {
+          console.log("❤️❤️❤️❤️")
           let updateOrder = await orderServices.updateOrder(
             order._id,
             orderDetails.payment,
@@ -95,7 +98,8 @@ module.exports = {
         }
       }
     } catch (error) {
-      res.redirect("/404error");
+      res.send(401);
+      console.log(error);
     }
   },
   invoice: async (req, res) => {

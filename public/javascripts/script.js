@@ -320,7 +320,7 @@ function fetchStateDataEach(addressId) {
   var stateList
   var countryList
   if (addressId) {
-    stateList = document.getElementById("stateList" + addressId)
+    stateList = document.getElementById("stateList"+addressId)
     countryList=document.getElementById("countryList"+addressId)
     
     

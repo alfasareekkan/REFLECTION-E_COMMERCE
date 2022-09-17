@@ -114,13 +114,15 @@ router.post('/v1/checkout-user',verifyUser,order.checkOutOrder)
 
 router
   .route('/v1/add-user-address/:id?')  
-  .post(order.addAddress)
+  .post(verifyUser,order.addAddress)
+  .patch(verifyUser,user.deleteAddress)
 
 
  router.get('/v1/order/invoice/:id',verifyUser,order.invoice) 
 
 router.post('/v1/verify-payment',verifyUser,order.verifyPayment)
-router.get('/v1/user-profile',verifyUser,user.userProfile)
+router.get('/v1/user-profile', verifyUser, user.userProfile)
+router.get('/v1/user-account-address', verifyUser, user.userAccountAddress)
   
 
 module.exports = router;

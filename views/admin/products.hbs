@@ -88,6 +88,24 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                                         {{#each products}}
                                             <tr>
                                                 <td><img src="{{this.image.[0].iamge_url}}" alt="" width="75px"
@@ -105,13 +123,14 @@
                                                     <!-- Button trigger modal -->
                                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                                         data-bs-target="#exampleModal{{this._id}}"
-                                                        onclick="getAllSizes('{{this.category.[0]._id}}')">
+                                                        onclick="getAllSizes('{{this.category.[0]._id}}','{{this._id}}')">
                                                         Quantity
                                                     </button>
 
                                                     <!-- Modal -->
-                                                    <div class="modal fade" id="exampleModal{{this._id}}" tabindex="-1"
-                                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal fade" id="exampleModal{{this._id}}"
+                                                        tabindex="-1" aria-labelledby="exampleModalLabel"
+                                                        aria-hidden="true">
                                                         <div class="modal-dialog modal-dialog-centered">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
@@ -121,21 +140,24 @@
                                                                         data-bs-dismiss="modal"
                                                                         aria-label="Close"></button>
                                                                 </div>
-                                                                        <form action="/admin/v1/get-all-size-with-catogory/{{this._id}}" method="post">
+                                                                <form
+                                                                    action="/admin/v1/get-all-size-with-catogory/{{this._id}}"
+                                                                    method="post">
 
-                                                                <div class="modal-body">
+                                                                    <div class="modal-body">
 
-                                                                    <table class="table">
-                                                                        <thead>
-                                                                            <tr>
-                                                                                <th scope="col">Sizes</th>
-                                                                                <th scope="col">Quntity</th>
-                                                                               
-                                                                            </tr>
-                                                                        </thead>
-                                                                        <tbody id="allSize{{this.category.[0]._id}}">
-                                                                            
-                                                                            {{!-- <tr>
+                                                                        <table class="table">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th scope="col">Sizes</th>
+                                                                                    <th scope="col">Quntity</th>
+
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody
+                                                                                id="allSize{{this._id}}">
+
+                                                                                {{!-- <tr>
                                                                                 <form action=""></form>
                                                                                 
                                                                                 <th scope="row">1</th>
@@ -149,12 +171,12 @@
                                                                                
                                                                                 <form action=""></form>
                                                                             </tr> --}}
-                                                                            
-                                                                            
-                                                                        </tbody>
-                                                                        
-                                                                    </table>
-                                                                    {{!-- <form action="">
+
+
+                                                                            </tbody>
+
+                                                                        </table>
+                                                                        {{!-- <form action="">
                                                                         <div class="form-group">
                                                                             <label for="recipient-name"
                                                                                 class="col-form-label">
@@ -182,13 +204,14 @@
                                                                         </div>
                                                                     </form> --}}
 
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                        data-bs-dismiss="modal">Close</button>
-                                                                    <button type="submit" class="btn btn-primary" >Save
-                                                                        changes</button>
-                                                                </div>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">Close</button>
+                                                                        <button type="submit"
+                                                                            class="btn btn-primary">Save
+                                                                            changes</button>
+                                                                    </div>
                                                                 </form>
                                                             </div>
                                                         </div>
@@ -214,17 +237,17 @@
                                                             data-target="#exampleModal2{{this._id}}"
                                                             data-placement="top" title="Delete"><i
                                                                 class="fa fa-trash color-danger"></i></a></span>
-                                                                
+
                                                 </td>
                                             </tr>
 
                                             {{!-- delete --}}
                                             <div class="modal fade" id="exampleModal2{{this._id}}" tabindex="-1"
-                                                aria-labelledby="exampleModalLabel2{{this._id}}" aria-hidden="true">
+                                                aria-labelledby="exampleModalLabel2" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel2{{this._id}}">
+                                                            <h5 class="modal-title" id="exampleModalLabel2">
                                                                 Delete Product </h5>
                                                             <button type="button" class="close" data-dismiss="modal"
                                                                 aria-label="Close"></button>
@@ -277,7 +300,7 @@
             <!-- end data table  -->
             <!-- ============================================================== -->
         </div>
-       
+
 
 
 
@@ -307,17 +330,21 @@
         <!-- ============================================================== -->
     </div>
     <script>
-        function getAllSizes(id) {
+        function getAllSizes(id,id2) {
+            console.log(id,id2)
             fetch("/admin/v1/get-all-size-with-catogory/" + id, {
                 method: "GET",
             }).then((response) => response.json())
                 .then((response) => {
-                    var html=""
-                    for(var i=0; i<response.length;i++){
-                         html+='<tr><th scope="row">'+response[i].size+'<input type="text" name="sizeId" value="'+response[i]._id+'" hidden /></th> <td><div class="form-group"><input type="number" class="form-control" placeholder="Enter Quantity" name="quantity" required /></div></td> </tr>'
+                    var html = ""
+                    //document.getElementById("allSize" + id).innerHTML = ""
+                    console.log(response)
+                    for (var i = 0; i < response.length; i++) {
+                        console.log(i)
+                        html += '<tr><th scope="row">' + response[i].size + '<input type="text" name="sizeId" value="' + response[i]._id + '" hidden /></th> <td><div class="form-group"><input type="number" class="form-control" placeholder="Enter Quantity" name="quantity" required /></div></td> </tr>'
                     }
-                
-                     document.getElementById("allSize"+id).innerHTML=html                                                                
+                    console.log(html)
+                    document.getElementById("allSize" + id2).innerHTML = html
 
 
 
@@ -331,12 +358,12 @@
     <!-- Optional JavaScript -->
     {{!-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        function sewty(){
+        function sewty() {
             Swal.fire(
-  'Good job!',
-  'You clicked the button!',
-  'success'
-)
+                'Good job!',
+                'You clicked the button!',
+                'success'
+            )
         }
     </script> --}}
     <script src="/assets/vendor/jquery/jquery-3.3.1.min.js"></script>

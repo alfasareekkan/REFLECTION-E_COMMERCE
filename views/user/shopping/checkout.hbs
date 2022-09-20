@@ -748,8 +748,7 @@
                 },
             }).then(response => response.json())
                 .then(response => {
-                    console.log('success', response)
-                    console.log(response.paymentMethod)
+                    
 
                     if (response.paymentMethod === "COD") {
                         Swal.fire({
@@ -802,8 +801,6 @@
         }
 
         function verifyPayment(paymentStatus,orderDetails){
-            console.log(paymentStatus,"😒😒😒😒")
-            console.log(orderDetails,"😒😒😒😒")
 
             fetch("/v1/verify-payment",{
                 method:"POST",

@@ -7,7 +7,8 @@ const product=require('../controllers/product')
 const upload = require('../utils/multer')
 const Category=require('../models/category');
 const { login } = require('../controllers/auth.controller');
-const {displayAllCustomers, updateUserStatus}=require('../controllers/customer')
+const { displayAllCustomers, updateUserStatus } = require('../controllers/customer')
+const coupon=require('../controllers/coupon')
 let adminPartials = true
 let adminPartialsDont=true
 
@@ -90,7 +91,12 @@ router.get('/product-unlist/:id',verifyAdmin, product.adminProductUnlist)
 router.get('/product-list/:id',verifyAdmin, product.adminProductList)
 router.get('/delete-product/:id/:image1_id/:image2_id/:image3_id',verifyAdmin, product.adminProductDelete) 
 router.get('/edit-product/:id',verifyAdmin, product.adminEditProduct)
-router.post('/update-products/:id',verifyAdmin,upload.any('image'),product.adminUpdateProduct)
+router.post('/update-products/:id', verifyAdmin, upload.any('image'), product.adminUpdateProduct)
+
+//coupon management
+router.get('/v1/coupon-management', verifyAdmin, coupon.viewAllCoupons)
+router.post('/v1/add-coupon',verifyAdmin,coupon.addCoupon)
+
 
 
 

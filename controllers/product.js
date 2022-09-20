@@ -1,6 +1,7 @@
 let adminPartials = true;
 let adminPartialsDont = true;
 let submenuShowProduct = true;
+const mongoose = require('mongoose');
 const Category = require("../models/category");
 const Brand = require("../models/brand");
 const path = require("path");
@@ -165,7 +166,8 @@ module.exports = {
   getAllSizeWithCatogory:async (req, res) => {
     try {
       let id = req.params.id;
-      let sizes = await ProductSize.find({ categoryId: id,noSqlMode: { $ne: "3" }})
+      let sizes = await ProductSize.find({ categoryId: mongoose.Types.ObjectId(id), noSqlMode: { $ne: "3" } })
+      console.log(sizes)
       res.status(200).json(sizes);
     } catch (error) {
       res.status(501)
@@ -175,7 +177,9 @@ module.exports = {
     try {
       let product_id= req.params.id
       let values = req.body
-      if (typeof values == "object") {
+      let sizeType= typeof values.sizeId
+      if (sizeType ==='string') {
+        console.log("❤️❤️❤️")
         let qauntity = values.quantity
         let size_id = values.sizeId
         let ProductConstant = new ProductConstants({

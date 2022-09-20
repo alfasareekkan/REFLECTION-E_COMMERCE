@@ -50,6 +50,10 @@ const exphbs = hbs.create({
       return ogValue==checkValue ? 'selected' : '';
      
     },
+    formatString(data) {
+      let newData = data.toUTCString();
+      return newData.slice(0,16)
+    }
     
     // cartCountHelper: (userId,cb) => {return cartCountHelper(userId) },
   }

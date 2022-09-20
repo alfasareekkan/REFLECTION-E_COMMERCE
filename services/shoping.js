@@ -47,7 +47,6 @@ module.exports = {
   findSizeAndQuantityForProduct: async (prodId) => {
     try {
       console.log(prodId);
-      let ppp = prodId.toString();
       let sizes = await ProductConstants.aggregate([
         {
           $match: {

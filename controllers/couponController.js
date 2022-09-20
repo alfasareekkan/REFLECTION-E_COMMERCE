@@ -28,11 +28,18 @@ module.exports = {
             res.redirect('/admin/v1/coupon-management')
         }
         } catch (error) {
-            console.error(error);
+            res.redirect('/404error')
         }
-        // let { graterPrice, offerPrice,startDate,expiryDate } = req.body
         
-         
-    
+    },
+    deleteCoupon: async(req, res) => {
+        let couponId = req.body.couponId
+        try {
+            let result = await Coupon.findByIdAndDelete(couponId)
+            result ? res.status(200).json({ status: true }) : res.status(404).send(error);
+        } catch (error) {
+            res.status(404).send(error)
+        }
+        
     }
 } 

@@ -32,12 +32,9 @@ module.exports = {
         let productId = req.params.id
         let userId = req.session.user._id
         let productConstant = await productConstants.findOne({ product_id: productId, size_id: sizeId })
-        // console.log(productConstant,"its ok😢😢😢😢😢😢😢😢😢😢")
+    
         
         try {
-            // let user_id = req.session.user._id
-            // let productId = req.params.id || req.session.productToCart
-            // let productConstantId = req.params.productConstants || req.session.productConstants
             let userCartValidate = await Cart.findOne({ user_id:mongoose.Types.ObjectId(userId) })
             
             if (userCartValidate) {
@@ -53,7 +50,6 @@ module.exports = {
                     let newProduct = { product_id: mongoose.Types.ObjectId(productId), productConstantId: mongoose.Types.ObjectId(productConstant._id), count: 1 }
                     userCartValidate.products.push(newProduct)
                     await userCartValidate.save()
-                    // console.log(userCartValidate.products.length)
                         
                     res.redirect('/v1/user-cart-show')
                 }

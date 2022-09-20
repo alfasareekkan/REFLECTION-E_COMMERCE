@@ -235,39 +235,38 @@
                         </div>
                         <form method="post" action="/admin/v1/add-coupon" id="form">
                             <div class="modal-body">
-                                
+
 
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">
                                         Grater Price</label>
-                                    <input type="number" class="form-control" placeholder="Enter a price ,The coupon is applicable for grater than this price"
+                                    <input type="number" class="form-control"
+                                        placeholder="Enter a price ,The coupon is applicable for grater than this price"
                                         name="graterPrice" id="" required />
                                 </div>
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">
                                         Offer Price%</label>
-                                    <input type="number" class="form-control" placeholder="How much discount you want to give to the customer" min="0" max="100"
-                                        name="offerPrice" id="" required />
+                                    <input type="number" class="form-control"
+                                        placeholder="How much discount you want to give to the customer"  name="offerPrice" id="" required />
                                 </div>
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">
                                         Start Date</label>
-                                    <input type="date" class="form-control"
-                                        name="startDate" id="" required />
+                                    <input type="date" class="form-control" name="startDate" id="" required />
                                 </div>
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">
                                         Expiry Date</label>
-                                    <input type="date" class="form-control"
-                                        name="expiryDate" id="" required />
+                                    <input type="date" class="form-control" name="expiryDate" id="" required />
                                 </div>
-                                
-                                
+
+
 
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <input type="submit" class="btn btn-primary" value="Add"  />
+                                <input type="submit" class="btn btn-primary" value="Add" />
                             </div>
                         </form>
                     </div>
@@ -300,7 +299,7 @@
                                             <th>Coupon Code</th>
 
 
-                                            
+
                                             <th>
                                                 Status
                                                 </tt>
@@ -309,31 +308,26 @@
                                     </thead>
                                     <tbody>
                                         {{#each coupons}}
-                                            <tr>
+                                            <tr id="row{{this._id}}">
                                                 <td>{{this.graterPrice}}</td>
-                                                <td>{{this.offerPrice}}</td>
+                                                <td>{{this.offerPrice}}%</td>
                                                 <td>{{formatString this.expiryDate}}</td>
-                                                <td >{{formatString this.startDate}}</td>
+                                                <td>{{formatString this.startDate}}</td>
                                                 <td>{{this.couponCode}}</td>
-                                                <td>{{#if this.status}}
-                                                        <a style="color: red;cursor: pointer"
-                                                            onclick="blockParentCategory('{{this._id}}')"
-                                                            id="parent-category{{this._id}}">Unlist</a>
+                                                <td>{{#if this.isActive}}
+                                                        <p style="color: green;cursor: pointer">Active</p>
+
                                                     {{else}}
-                                                        <a style="color: green;cursor: pointer"
-                                                            onclick="blockParentCategory('{{this._id}}')"
-                                                            id="parent-category{{this._id}}">Publish</a>
+                                                        <p style="color: red;cursor: pointer">disable</p>
+
                                                     {{/if}}
                                                 </td>
 
 
-                                                <td> <span><a href="h" class="mr-4" data-toggle="modal"
-                                                            data-target="#exampleModal3{{this._id}}"
-                                                            data-placement="top" title="Edit"><i
-                                                                class="fa fa-edit color-muted"></i> </a>
-                                                        <a href="javascript:void()" data-toggle="modal"
-                                                            data-target="#exampleModal2{{this._id}}"
-                                                            data-placement="top" title="Delete"><i
+                                                <td> <span>
+                                                        <a href="javascript:void()"
+                                                            onclick="deleteCoupon('{{this._id}}')" data-placement="top"
+                                                            title="Delete"><i
                                                                 class="fa fa-trash color-danger"></i></a></span></td>
 
                                             </tr>
@@ -352,16 +346,16 @@
                                                         </div>
                                                         <div class="modal-body">
 
-                                                            Delete {{this.subCategory}} from category
+                                                            Delete this coupon
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-light"
                                                                 data-dismiss="modal">Close</button>
-                                                            <a href="/admin/delete-category/{{this._id}}" type="button"
-                                                                class="btn btn-danger">
+                                                            <button type="button" class="btn btn-danger"
+                                                                onclick="deleteCoupon('{{this._id}}')">
 
                                                                 Delete
-                                                            </a>
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -483,6 +477,44 @@
         <!-- end footer -->
         <!-- ============================================================== -->
     </div>
+    <script>
+        function deleteCoupon(couponId) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch('/admin/v1/delete-coupon', {
+                        method: 'DELETE',
+                        body: JSON.stringify({ couponId: couponId }),
+                        headers: { 'Content-Type': 'application/json' },
+                    }).then(response => response.json()).then(response => {
+                        if (response.status) {
+                            let rowId = document.getElementById('row' + couponId)
+                            rowId.remove()
+                            Swal.fire(
+                                'Deleted!',
+                                'Your file has been deleted.',
+                                'success'
+                            )
+                        }
+
+                    })
+
+
+                }
+            })
+
+
+
+
+        }
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.js"
         integrity="sha256-ZafrO8ZXERYO794Tx1hPaAcdcXNZUNmXufXOSe0Hxj8=" crossorigin="anonymous"></script>
 

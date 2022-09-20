@@ -17,7 +17,6 @@ const user=require('../controllers/user')
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
-  // res.render('user/user-authenticatons/forgot-password');
   res.render("index", { userDetails: req.session.user});
 });
 router.get("/404error", (req, res) => {
@@ -32,8 +31,7 @@ router.get("/login", (req, res) => {
   if (req.session.user) {
     res.redirect('/')
   }
-  // const url = req.headers.referer
-  // console.log(url)
+  
 
 
 
@@ -75,15 +73,6 @@ router
 router.get("/v1/get-size-of-quantity/:id?", shoping.getProductQuantityWithSize)
 
 router.post("/v1/add-product-to-cart/:id?/:productConstants?", cart.addProductToCart)
-// router.post("/editQuestion", function (req, res) {
-//   try {
-//     console.log(req.body); 
-//   } catch (err) {
-//     console.log(err);
-//   } finally {
-//     res.end();
-//   }
-// });
 
 router.get('/v1/user-cart-show', verifyUser, cart.displayCart)
 router.post('/v1/increment-or-decrement-cart-item-count/:id?', cart.incrementOrDecrementCartItemCount)
@@ -97,9 +86,7 @@ router.get('/v1/add-product-to-whishList/:id', verifyUser, wishlist.addToWisList
 router.post('/v1/add-to-cart-from-wishlist/:id', verifyUser, wishlist.addToCart)
 router.post('/v1/delete-product-from-wishList', verifyUser, wishlist.removeFromWisList)
 
-// router.get('*', function(req, res) {
-//   res.redirect(req.session.myUrl);
-// });
+
 
 
 

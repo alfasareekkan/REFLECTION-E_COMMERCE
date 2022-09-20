@@ -14,7 +14,7 @@ module.exports = {
       let cartCount = await cartServices.cartCountHelper(userDetails._id);
       let totalPrice = await cartServices.totalPriceHelper(userDetails._id);
       let addresses = await userServices.findUser(userDetails._id);
-      // console.log(addresses.addresses)
+  
 
       res.render("user/shopping/checkout", {
         userCart,
@@ -32,7 +32,7 @@ module.exports = {
       let addresses = req.body;
       let userId = req.session.user._id;
       let refUrl=req.headers.referer
-      // let address
+
       let result;
       if (req.params.id) {
         result = await userServices.updateUserAddress(
@@ -52,11 +52,10 @@ module.exports = {
   },
   checkOutOrder: async (req, res) => {
     try {
-      // console.log(req.body)
+      
       let orderDetails = req.body,
         userId = req.session.user._id,
         userCart = await cartServices.userCart(userId),
-        //  cartCount = await cartServices.cartCountHelper(userId),
         totalPrice = await cartServices.totalPriceHelper(userId),
         addresses = await userServices.findUserAddress(
           userId,
@@ -71,7 +70,6 @@ module.exports = {
       console.log(order);
       if (order) {
         if (orderDetails.payment === "COD") {
-          console.log("❤️❤️❤️❤️")
           let updateOrder = await orderServices.updateOrder(
             order._id,
             orderDetails.payment,
@@ -84,8 +82,6 @@ module.exports = {
             .json({ orderId: updateOrder._id, paymentMethod: "COD" });
         } else {
           let razorPay = await razorPayInstance.generateRazorPay(order);
-          console.log(razorPay);
-          console.log(order);
           razorPay.status === "created"
             ? res
                 .status(200)
@@ -94,17 +90,15 @@ module.exports = {
                   paymentMethod: "razorPay",
                   paymentDetails: razorPay,
                 })
-            : console.log(razorPay);
+            :res.send(401) ;
         }
       }
     } catch (error) {
       res.send(401);
-      console.log(error);
     }
   },
   invoice: async (req, res) => {
     let orderId = req.params.id;
-    console.log(typeof orderId);
     let userDetails = req.session.user;
     try {
       if (orderId.length === 24) {
@@ -116,8 +110,6 @@ module.exports = {
           orderStatus: 1,
           updatedAt: 1,
         });
-        console.log(userOrder.products);
-        console.log(userOrder);
         res.render("user/shopping/invoice", { userDetails, userOrder });
       } else {
         throw new Error();
@@ -133,7 +125,6 @@ module.exports = {
       let hmac = crypto.createHmac('sha256', process.env.RAZORPAY_KEY_SECRET)
       hmac.update(orderDetails.paymentDetails.id + "|" + paymentStatus.razorpay_payment_id)
       hmac= hmac.digest('hex');
-      console.log(hmac)
       if (hmac == paymentStatus.razorpay_signature) {
         let updateOrder = await orderServices.updateOrder(
             orderDetails.orderDetails._id,

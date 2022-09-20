@@ -5,10 +5,6 @@ const { count } = require("../models/cart");
 
 module.exports = {
   createCart: async (userId, productId, productConstantId) => {
-    // let productData = [{
-    //     product_id: productId,
-    //     count:1
-    // }]
     let cart = new Cart({
       user_id: userId,
       products: [

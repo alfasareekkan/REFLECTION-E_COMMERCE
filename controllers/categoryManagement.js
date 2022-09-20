@@ -12,7 +12,6 @@ module.exports = {
     adminViewCategory: (req, res, next) => { 
         services.adminViewCategory().then((response) => { 
             let { parentCategories, categories } = response
-            console.log(parentCategories);
             res.render('admin/category', {
                 parentCategories,
                 categories,
@@ -49,7 +48,6 @@ module.exports = {
     },
     adminupdate: (req, res) => { 
         let CategoryId = req.params.id
-
         try {
             if (req.file.path) {
                 services.updateCategory(CategoryId, req.params.cloud_id, req.body,req.file.path,).then(() => {

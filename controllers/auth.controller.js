@@ -59,15 +59,6 @@ exports.login = async (req, res, next) => {
   
 
 exports.signup = async (req, res, next) => {
-  // let password = await bcrypt.hash(req.body.password, 10);
-  //       const newUser = new User({
-  //         email: req.body.email,
-  //         phone_number: req.body.phone_number,
-  //         password: password,
-  //       });
-  //       newUser.save().then((err) => {
-  //         res.redirect("/"):
-  //       });
   if (req.body.password === req.body.password2) {
     helpers.finderUser(req.body).then((response) => {
       if (response.status) {
@@ -78,7 +69,6 @@ exports.signup = async (req, res, next) => {
         otp.createServer().then((ser) => {
           res.redirect("/otpverify");
           serviceId = ser.sid;
-          console.log(req.body.phone_number);
           otp.createOtp(ser.sid, req.body.phone_number);
         });
       }
@@ -88,23 +78,12 @@ exports.signup = async (req, res, next) => {
     req.session.samepassword = true;
     res.redirect("/sign-up");
   }
-  
-
-  // console.log(req.session.tempUser);
-  // res.redirect("/otpverify");
-  // console.log(ser.sid);
-  // console.log(req.body.phone_number);
-
-  // client.verify.v2
-  //   .services(ser.sid)
-  //   .verifications.create({ to: `+91${req.body.phone_number}`, channel: "sms" })
-  //   .then((verification) => console.log(verification.status));
 };
 exports.verify = (req, res, next) => {
   otp.validateOtp(serviceId, req.session.tempUser.phone_number, req.body.otp)
     .then(async (status) => {
       if (status) {
-        console.log(status);
+        
         let password = await bcrypt.hash(req.session.tempUser.password, 10);
         let newUser = new User({
           email: req.session.tempUser.email,
@@ -126,30 +105,7 @@ exports.verify = (req, res, next) => {
         res.redirect("/otpverify");
       }
     });
-
-  // client.verify.v2
-  //   .services(ser.sid)
-  //   .verificationChecks.create({
-  //   to: `+91${req.session.tempUser.phone_number}`,
-  //   code: `${req.body.otp}`,
-  // })
-  // .then(async (verification_check) => {
-  //   if (verification_check.status) {
-  //     console.log(verification_check.status);
-  //     let password = await bcrypt.hash(req.session.tempUser.password, 10);
-  //     const newUser = new User({
-  //       email: req.session.tempUser.email,
-  //       phone_number: req.session.tempUser.phone_number,
-  //       password: password,
-  //     });
-  //     newUser.save().then((err) => {
-  //       res.redirect("/");
-  //     });
-  //   } else {
-  //       req.session.otpStatus = true;
-  //       res.redirect("/otpverify")
-  //   }
-  // });
+  
 };
 exports.logout = (req, res) => {
   req.session.destroy();

@@ -10,7 +10,6 @@ module.exports = {
                 let productId = req.params.id || req.session.productToCart 
                 let productConstantId = req.params.productConstants || req.session.productConstants 
                 let userCartValidate = await Cart.findOne({ user_id:mongoose.Types.ObjectId(user_id) })
-                // console.log(userCartValidate)
                 if (userCartValidate) {
                     let alreadyExistProductInCart = await Cart.findOne({ user_id:mongoose.Types.ObjectId(user_id), products:{ $elemMatch :{ product_id: mongoose.Types.ObjectId(productId), productConstantId:mongoose.Types.ObjectId(productConstantId) } }})
                     if (alreadyExistProductInCart) {
@@ -20,9 +19,7 @@ module.exports = {
                     else {
                         let newProduct = { product_id: mongoose.Types.ObjectId(productId), productConstantId: mongoose.Types.ObjectId(productConstantId),count:1 }
                         userCartValidate.products.push(newProduct)
-                        await userCartValidate.save()
-                        // console.log(userCartValidate.products.length)
-                        
+                        await userCartValidate.save()                        
                         res.status(201).json({condition:false,length:userCartValidate.products.length})
                     }
                 }
@@ -35,31 +32,34 @@ module.exports = {
             else {
                 req.session.productToCart = req.params.id
                 req.session.productConstants=req.params.productConstants
-                // res.redirect('/')
                res.status(200).json({condition:true})
             }
         } catch (error) {
-            console.log(error);
             res.send(404)
         }
         
     },
     displayCart: async (req, res) => {
-        let userDetails = req.session.user
-        let userCart = await cartServices.userCart(userDetails._id)
-        let cartCount = await cartServices.cartCountHelper(userDetails._id)
-        let totalPrice = await cartServices.totalPriceHelper(userDetails._id)
-        let cartCheck
-        // cartCount===0 ?cartCount=true:
-        console.log(cartCount, "😢😢😢😢😢😢😢")
-        if (cartCount === 0||cartCount ===undefined) { 
-            cartCheck = true
-        } else {
-            cartCheck = false
+        try {
+            let userDetails = req.session.user
+            let userCart = await cartServices.userCart(userDetails._id)
+            let cartCount = await cartServices.cartCountHelper(userDetails._id)
+            let totalPrice = await cartServices.totalPriceHelper(userDetails._id)
+            let cartCheck
+            if (cartCount === 0||cartCount ===undefined) { 
+                cartCheck = true
+            } else {
+                cartCheck = false
+            }
+            res.render('user/shopping/cart',
+                { userDetails,userCart,cartCount,totalPrice,cartCheck }
+            )
+        } catch (error) {
+            res.redirect('/404error')
         }
-        res.render('user/shopping/cart',
-            { userDetails,userCart,cartCount,totalPrice,cartCheck }
-        )
+       
+    
+        
     },
     incrementOrDecrementCartItemCount: async (req, res) => {
         try {

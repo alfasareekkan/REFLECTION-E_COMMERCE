@@ -47,7 +47,6 @@ module.exports = {
         { parentCategory: search_query, noSqlMode: { $ne: "3" } },
         { subCategory: 1 }
       ).then((data) => {
-        console.log(data)
         response.json(data);
       });
     }
@@ -167,7 +166,6 @@ module.exports = {
     try {
       let id = req.params.id;
       let sizes = await ProductSize.find({ categoryId: mongoose.Types.ObjectId(id), noSqlMode: { $ne: "3" } })
-      console.log(sizes)
       res.status(200).json(sizes);
     } catch (error) {
       res.status(501)
@@ -196,13 +194,6 @@ module.exports = {
         let qauntity = values.quantity[i]
         let size_id = values.sizeId[i]
         console.log(size_id);
-        
-       
-        // let data= {product_id: proId,
-        //   size_id: values.sizeId[i],
-        //   qauntity: values.qauntity[i]
-        // }
-        // console.log(data)
         
         let ProductConstant = new ProductConstants({
           product_id,qauntity,size_id

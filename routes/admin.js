@@ -8,7 +8,7 @@ const upload = require('../utils/multer')
 const Category=require('../models/category');
 const { login } = require('../controllers/auth.controller');
 const { displayAllCustomers, updateUserStatus } = require('../controllers/customer')
-const coupon=require('../controllers/coupon')
+const coupon=require('../controllers/couponController')
 let adminPartials = true
 let adminPartialsDont=true
 
@@ -95,7 +95,8 @@ router.post('/update-products/:id', verifyAdmin, upload.any('image'), product.ad
 
 //coupon management
 router.get('/v1/coupon-management', verifyAdmin, coupon.viewAllCoupons)
-router.post('/v1/add-coupon',verifyAdmin,coupon.addCoupon)
+router.post('/v1/add-coupon', verifyAdmin, coupon.addCoupon)
+router.delete('/v1/delete-coupon', verifyAdmin, coupon.deleteCoupon)
 
 
 

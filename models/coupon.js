@@ -2,7 +2,11 @@ const mongoose = require("mongoose");
 
 const couponSchema = new mongoose.Schema(
   {
-    graterPrice: {
+    maxPrice: {
+      type: Number,
+      required: true,
+    },
+    minPrice: {
       type: Number,
       required: true,
     },
@@ -10,26 +14,31 @@ const couponSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    couponCode: {
-      type: String,
+    quantity: {
+      type: Number,
       required: true,
-      unique: true,
     },
+    // couponCode: {
+    //   type: String,
+    //   required: true,
+    //   unique: true,
+    // },
     expiryDate: {
       type: Date,
       required: true,
-      unique: true,
         },
     startDate: {
             type: Date,
             required: true,
-            unique: true,
     },
-    isActive: {
-      type: Boolean,
-      require: true,
-      default: true,
-    },
+    couponCodes:{
+      type:Array
+    }
+    // isActive: {
+    //   type: Boolean,
+    //   require: true,
+    //   default: true,
+    // },
   },
   { timestamps: true, collection: "coupon" }
 );

@@ -5,6 +5,7 @@ const userServices = require("../services/userServices");
 const Cart = require("../models/cart");
 const Order = require("../models/order");
 const razorPayInstance = require("../utils/razorPay");
+const Coupons=require('../models/coupon')
 
 module.exports = {
   checkoutPage: async (req, res) => {
@@ -133,7 +134,25 @@ module.exports = {
             true
           );
           
-          await Cart.findByIdAndDelete(orderDetails.orderDetails.products[0]._id); 
+        await Cart.findByIdAndDelete(orderDetails.orderDetails.products[0]._id);
+        console.log(orderDetails.orderDetails.subTotal)
+        let coupon = await Coupons.findOne({
+          $and: [
+            { minPrice: { $lt: orderDetails.orderDetails.subTotal } },
+            { maxPrice: { $gt: orderDetails.orderDetails.subTotal } }
+          ]
+        })
+        let expDate = coupon?.expiryDate
+        let expiryCheck= expDate>=Date.now() ? true:false; 
+        if (expiryCheck) {
+          console.log("Expiry check", expiryCheck);
+          console.log("exp date:",expDate);
+        }
+ 
+        
+
+
+        
           res
             .status(200)
             .json({ orderId: orderDetails.orderDetails._id});

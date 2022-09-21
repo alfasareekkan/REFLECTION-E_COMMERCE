@@ -239,16 +239,29 @@
 
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">
-                                        Grater Price</label>
+                                        Max Price</label>
                                     <input type="number" class="form-control"
-                                        placeholder="Enter a price ,The coupon is applicable for grater than this price"
-                                        name="graterPrice" id="" required />
+                                        placeholder="Enter a price ,The coupon is applicable for maximum of this price"
+                                        name="maxPrice" id="" required />
                                 </div>
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">
-                                        Offer Price%</label>
+                                        Min Price</label>
+                                    <input type="number" class="form-control"
+                                        placeholder="Enter a price ,The coupon is applicable for min than this price"
+                                        name="minPrice" id="" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="recipient-name" class="col-form-label">
+                                        Offer Price</label>
                                     <input type="number" class="form-control"
                                         placeholder="How much discount you want to give to the customer"  name="offerPrice" id="" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="recipient-name" class="col-form-label">
+                                        Number of coupons</label>
+                                    <input type="number" class="form-control"
+                                        placeholder="Maximum of 5000 and minimum of 1"  name="quantity" id="" required min="1" max="5000"/>
                                 </div>
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">
@@ -293,15 +306,16 @@
                                     <thead>
                                         <tr>
                                             <th>Gtr Price</th>
+                                            <th>Min Price</th>
                                             <th>Offer Price</th>
                                             <th>Expiry Data</th>
                                             <th>Starting Date</th>
-                                            <th>Coupon Code</th>
+                                            <th>Total Number Of Coupons</th>
 
 
 
                                             <th>
-                                                Status
+                                                Number of coupon used
                                                 </tt>
                                             <th>Action</th>
                                         </tr>
@@ -309,18 +323,13 @@
                                     <tbody>
                                         {{#each coupons}}
                                             <tr id="row{{this._id}}">
-                                                <td>{{this.graterPrice}}</td>
-                                                <td>{{this.offerPrice}}%</td>
+                                                <td>{{this.maxPrice}}</td>
+                                                <td>{{this.minPrice}}</td>
+                                                <td>{{this.offerPrice}}</td>
                                                 <td>{{formatString this.expiryDate}}</td>
                                                 <td>{{formatString this.startDate}}</td>
-                                                <td>{{this.couponCode}}</td>
-                                                <td>{{#if this.isActive}}
-                                                        <p style="color: green;cursor: pointer">Active</p>
-
-                                                    {{else}}
-                                                        <p style="color: red;cursor: pointer">disable</p>
-
-                                                    {{/if}}
+                                                <td>{{this.quantity}}</td>
+                                                <td>{{totalCouponUsed}}
                                                 </td>
 
 
@@ -434,11 +443,19 @@
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th>Gtr Price</th>
+                                            <th>Max Price</th>
+                                            <th>Min Price</th>
                                             <th>Offer Price</th>
                                             <th>Expiry Data</th>
                                             <th>Starting Date</th>
-                                            <th>Coupon Code</th>
+                                            <th>Total Number Of Coupons</th>
+
+
+
+                                            <th>
+                                                Number of coupon used
+                                                </tt>
+                                            <th>Action</th>
                                         </tr>
                                     </tfoot>
                                 </table>

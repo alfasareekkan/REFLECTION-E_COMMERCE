@@ -1,12 +1,15 @@
-const User=require('../models/user')
+const User = require('../models/user')
+const mongoose=require('mongoose')
 
 module.exports = {
     verifyUser: async (req, res, next) => {
         try {
             if (req.session.user) {
                 let UserId = req.session.user._id;
-                let user = await User.findOne({ _id: UserId,status:false })
+                let user = await User.findOne({ _id:UserId, status: false })
                 if (user) {
+                console.log(user);
+
                     req.session.destroy()
                     res.redirect('/')
                 }

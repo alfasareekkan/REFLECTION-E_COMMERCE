@@ -197,7 +197,7 @@ module.exports = {
     }
     
   },
-  totalPriceHelper:async (userId) => {
+  totalPriceHelper: async (userId) => {
     try {
       let totalPrices = await Cart.aggregate([
         { $match: { user_id: mongoose.Types.ObjectId(userId) } },
@@ -233,23 +233,52 @@ module.exports = {
         },
         {
           $project: {
-            
+            couponPrice: 1,
             eachTotal: {
-              $multiply:['$products.count','$cartItems.price']
+              $multiply: ['$products.count', '$cartItems.price']
             },
             
           }
         },
         {
+          // $addFields: {
+          //   subTotal: {
+              
+          //   }
+          // }
           $group: {
-            _id:null,
+            _id: null,
+            couponPrice:
+              { $sum: { $multiply: ["$couponPrice", 1] } }
+            ,
             subTotal: {
-              $sum: "$eachTotal"}
+              $sum: "$eachTotal"
+            },
+            count: { $count: {} }
+          }
+        },
+        {
+          $project: {
+            subTotal: 1,
+            couponPrice: {
+              $divide: ["$couponPrice", "$count"]
+            },
+            
+          }
+        },
+        {
+          $project: {
+            subTotal: 1,
+            couponPrice: 1,
+            totalPrice: {
+              $subtract: ["$subTotal", "$couponPrice"]
+            }
           }
         }
+        
 
       ])
-      // console.log(totalPrices, "dfhhnfgjnhfhfj");
+      console.log(totalPrices, "dfhhnfgjnhfhfj");
       return totalPrices;
     } catch (error) {
       console.log(error);

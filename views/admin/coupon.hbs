@@ -233,10 +233,24 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <form method="post" action="/admin/v1/add-coupon" id="form">
+                        <form method="post" action="/admin/v1/add-coupon" id="form" enctype="multipart/form-data">
                             <div class="modal-body">
 
 
+                                <div class="form-group">
+                                    <label for="recipient-name" class="col-form-label">
+                                        Coupon Name</label>
+                                    <input type="text" class="form-control"
+                                        
+                                        name="couponName" id="" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="recipient-name" class="col-form-label">
+                                        Coupon Description</label>
+                                    <input type="text" class="form-control"
+                                        
+                                        name="description" id="" required />
+                                </div>
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">
                                         Max Price</label>
@@ -273,6 +287,13 @@
                                         Expiry Date</label>
                                     <input type="date" class="form-control" name="expiryDate" id="" required />
                                 </div>
+                                <div class="form-group">
+                                    <label for="recipient-name" class="col-form-label">
+                                        Coupon Image</label>
+                                    <input type="file" class="form-control"
+                                        
+                                        name="couponImage" id="" required />
+                                </div>
 
 
 
@@ -305,6 +326,8 @@
                                     style="width:100%">
                                     <thead>
                                         <tr>
+                                            <th>Image</th>
+                                        <th>CouponName</th>
                                             <th>Gtr Price</th>
                                             <th>Min Price</th>
                                             <th>Offer Price</th>
@@ -323,6 +346,8 @@
                                     <tbody>
                                         {{#each coupons}}
                                             <tr id="row{{this._id}}">
+                                                <td><img src="{{this.couponImage}}" alt="" width="100px"></td>
+                                                <td>{{this.couponName}}</td>
                                                 <td>{{this.maxPrice}}</td>
                                                 <td>{{this.minPrice}}</td>
                                                 <td>{{this.offerPrice}}</td>
@@ -443,6 +468,8 @@
                                     </tbody>
                                     <tfoot>
                                         <tr>
+                                             <th>Image</th>
+                                        <th>CouponName</th>
                                             <th>Max Price</th>
                                             <th>Min Price</th>
                                             <th>Offer Price</th>

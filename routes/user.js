@@ -9,7 +9,8 @@ const cart = require("../controllers/cartController")
 const { verifyUser } = require('../middleware/authenticationMiddleware')
 const wishlist = require('../controllers/wishlistController');
 const order = require('../controllers/orderController');
-const user=require('../controllers/user')
+const user = require('../controllers/user')
+const coupon=require('../controllers/couponController')
 // const { routes } = require("../app");
 
 
@@ -110,6 +111,11 @@ router
 router.post('/v1/verify-payment',verifyUser,order.verifyPayment)
 router.get('/v1/user-profile', verifyUser, user.userProfile)
 router.get('/v1/user-account-address', verifyUser, user.userAccountAddress)
-  
+
+//coupon 
+router.get('/v1/coupons', verifyUser, coupon.viewUsersCoupon)
+router.post('/v1/redeem-coupon',verifyUser,order.redeemCoupon)
+
+
 
 module.exports = router;

@@ -15,6 +15,8 @@ module.exports = {
       let cartCount = await cartServices.cartCountHelper(userDetails._id);
       let totalPrice = await cartServices.totalPriceHelper(userDetails._id);
       let addresses = await userServices.findUser(userDetails._id);
+      let redeemForm;
+      totalPrice[0].couponPrice===0?redeemForm=true:redeemForm=false;
   
 
       res.render("user/shopping/checkout", {
@@ -23,6 +25,7 @@ module.exports = {
         totalPrice,
         userDetails,
         addresses: addresses.addresses,
+        redeemForm
       });
     } catch (error) {
       res.redirect("/404error");
@@ -107,6 +110,8 @@ module.exports = {
           products: 1,
           deliveryAddress: 1,
           subTotal: 1,
+          totalPrice: 1,
+          offerPrice:1,
           paymentType: 1,
           orderStatus: 1,
           updatedAt: 1,
@@ -135,7 +140,7 @@ module.exports = {
           );
           
         await Cart.findByIdAndDelete(orderDetails.orderDetails.products[0]._id);
-        console.log(orderDetails.orderDetails.subTotal)
+  
         let coupon = await Coupons.findOne({
           $and: [
             { minPrice: { $lt: orderDetails.orderDetails.subTotal } },
@@ -145,18 +150,47 @@ module.exports = {
         let expDate = coupon?.expiryDate
         let expiryCheck= expDate>=Date.now() ? true:false; 
         if (expiryCheck) {
-          console.log("Expiry check", expiryCheck);
-          console.log("exp date:",expDate);
+          console.log(orderDetails)
+           await Coupons.updateOne({ _id: coupon._id, "couponCodes.userId":null }, { $set: { "couponCodes.$.userId": orderDetails.orderDetails.user_id } })
+          
         }
  
-        
-
-
-        
+      
           res
             .status(200)
             .json({ orderId: orderDetails.orderDetails._id});
 
       }
+  },
+  redeemCoupon: async (req, res) => {
+    try {
+      let data = req.body
+    
+      let userId = req.session.user._id;
+      let isUserCouponExist = await Coupons.findOne({ "couponCodes":{$elemMatch:{userId:userId,status: true,couponCode:data.couponCode}} },{offerPrice:1})
+      if (isUserCouponExist) {
+       let isUpdateCart= await Cart.updateOne({user_id:userId }, {
+          $set: {
+            couponPrice:isUserCouponExist.offerPrice
+          }
+        })
+       let isUpdateCoupon= await Coupons.updateOne({ _id: isUserCouponExist._id, couponCodes: { $elemMatch: { userId: userId, couponCode: data.couponCode } } }, { $set: { "couponCodes.$.status": false } }, { new: true })
+        if (isUpdateCart.modifiedCount === 1 && isUpdateCoupon.modifiedCount === 1) {
+          res.status(201).json({ couponStatus: true })
+          
+        }
+
+      }
+      else {
+        res.status(201).json({couponStatus:false})
+      }
+
+
+      
+    } catch (error) {
+      console.log(error)
+    }
+
+
   }
 };

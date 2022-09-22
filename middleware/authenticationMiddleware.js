@@ -8,7 +8,6 @@ module.exports = {
                 let UserId = req.session.user._id;
                 let user = await User.findOne({ _id:UserId, status: false })
                 if (user) {
-                console.log(user);
 
                     req.session.destroy()
                     res.redirect('/')

@@ -11,7 +11,7 @@ module.exports = {
     generateRazorPay: (orderDetails) => {
         return new Promise((resolve, reject) => {
             instance.orders.create({
-                amount: orderDetails.subTotal*100,
+                amount: orderDetails.totalPrice*100,
                 currency: "INR",
                 receipt: "" + orderDetails._id,
                 notes: {

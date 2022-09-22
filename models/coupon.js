@@ -2,6 +2,14 @@ const mongoose = require("mongoose");
 
 const couponSchema = new mongoose.Schema(
   {
+    couponName: {
+      type: String,
+      required: true
+    },
+    description: {
+      type: String,
+      required: true
+    },
     maxPrice: {
       type: Number,
       required: true,
@@ -33,6 +41,10 @@ const couponSchema = new mongoose.Schema(
     },
     couponCodes:{
       type:Array
+    },
+    couponImage: {
+      type: String,
+      required: true
     }
     // isActive: {
     //   type: Boolean,

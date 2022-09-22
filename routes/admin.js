@@ -94,9 +94,10 @@ router.get('/edit-product/:id',verifyAdmin, product.adminEditProduct)
 router.post('/update-products/:id', verifyAdmin, upload.any('image'), product.adminUpdateProduct)
 
 //coupon management
-router.get('/v1/coupon-management', verifyAdmin, coupon.viewAllCoupons)
-router.post('/v1/add-coupon', verifyAdmin, coupon.addCoupon)
-router.delete('/v1/delete-coupon', verifyAdmin, coupon.deleteCoupon)
+router.get('/v1/coupon-management', coupon.viewAllCoupons)
+router.post('/v1/add-coupon',upload.single('couponImage'), coupon.addCoupon)
+router.delete('/v1/delete-coupon', coupon.deleteCoupon)
+
 
 
 

@@ -177,7 +177,6 @@ module.exports = {
       let values = req.body
       let sizeType= typeof values.sizeId
       if (sizeType ==='string') {
-        console.log("❤️❤️❤️")
         let qauntity = values.quantity
         let size_id = values.sizeId
         let ProductConstant = new ProductConstants({

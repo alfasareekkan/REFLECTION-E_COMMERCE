@@ -10,15 +10,14 @@ const orderSchema = new mongoose.Schema({
     deliveryAddress: {
         type: Object
     },
-    totalAmount: {
+    totalPrice: {
         type: Number,
         
     },
-    coupon: {
-        code: String,
-        discount: Number
+    offerPrice: {
+        type:Number ,
     },
-    subTotal: {
+    subTotal:{
         type: Number
     },
     paymentType:{

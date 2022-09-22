@@ -13,7 +13,12 @@ const cartSchema = new mongoose.Schema({
     user_id: {
         type:mongoose.Schema.Types.ObjectId
     },
-    products:Array
+    products: Array,
+    couponPrice: {
+        type: Number,
+        default:0
+    }
+    
 }, {
     timestamps: true,collection:'Cart'
 }

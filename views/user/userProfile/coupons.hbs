@@ -1,0 +1,58 @@
+<div class="container">
+    <div class="row mt-5">
+    <div class="col-12 col-md-6 mt-1">
+    <div class="accordion" id="accordionExample">
+        {{#each userCoupon}}
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingOne">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+        {{this.couponName}}
+      </button>
+    </h2>
+    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+        <div>
+        <p>This is your {{this.couponName}} redeem code: <strong>{{this.couponCodes.[0].couponCode}}</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{/each}}
+  
+  
+</div>
+</div>
+<div class="col-12 col-md-6 mt-1">
+    <div>
+    {{!-- <img src="/userpage/images/banner-01.jpg" alt="" width="90%"> --}}
+    <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="false">
+  
+  <div class="carousel-inner">
+    {{#each couponDetails}}
+    <div class="carousel-item {{#if @first }}active {{/if}}">
+      <img src="{{this.couponImage}}" class="d-block w-100" alt="...">
+      <div class="carousel-caption d-none d-md-block ">
+        <h5>{{this.couponName}}</h5>
+        <p>{{this.description}}.</p>
+      </div>
+    </div>
+    {{/each}}
+    
+    
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+    </div>
+
+</div>
+</div>
+
+</div>

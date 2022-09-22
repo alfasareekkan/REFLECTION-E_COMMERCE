@@ -8,8 +8,9 @@ module.exports = {
                 user_id: mongoose.Types.ObjectId(userId),
                 products: userCart,
                 deliveryAddress: addresses[0].addresses,
-                totalPrice: totalPrice[0].subTotal,
+                totalPrice: totalPrice[0].totalPrice,
                 subTotal: totalPrice[0].subTotal,
+                offerPrice: totalPrice[0].couponPrice,
                 paymentType: "Pending",
                 orderStatus:"Pending" 
             })

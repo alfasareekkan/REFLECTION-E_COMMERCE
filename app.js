@@ -5,7 +5,6 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var hbs = require("express-handlebars");
 const mongoose = require("mongoose");
-const Cart =require('./models/cart')
 const dotenv = require("dotenv");
 const session = require("express-session");
 var userRouter = require("./routes/user");
@@ -53,6 +52,11 @@ const exphbs = hbs.create({
     formatString(data) {
       let newData = data.toUTCString();
       return newData.slice(0,16)
+    },
+    lastItemInArray: (array) => {
+      let status = array.slice(-1);
+      
+      return status[0].status
     }
     
     // cartCountHelper: (userId,cb) => {return cartCountHelper(userId) },

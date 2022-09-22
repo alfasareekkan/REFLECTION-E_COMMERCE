@@ -5,7 +5,11 @@ const userServices = require("../services/userServices");
 const Cart = require("../models/cart");
 const Order = require("../models/order");
 const razorPayInstance = require("../utils/razorPay");
-const Coupons=require('../models/coupon')
+const Coupons = require('../models/coupon');
+const { request } = require("http");
+let adminPartials = true
+let adminPartialsDont = true
+let submenuShow = true
 
 module.exports = {
   checkoutPage: async (req, res) => {
@@ -71,7 +75,6 @@ module.exports = {
         totalPrice,
         addresses
       );
-      console.log(order);
       if (order) {
         if (orderDetails.payment === "COD") {
           let updateOrder = await orderServices.updateOrder(
@@ -190,7 +193,30 @@ module.exports = {
     } catch (error) {
       console.log(error)
     }
-
-
+  },
+  orderDetailsViewAdmin: async (req, res) => {
+    try {
+      let orderDetails = await Order.find({ orderStatus: 'Confirmed' });
+    res.render('admin/orders',
+      {
+        adminPartials,
+        submenuShow,
+        orderDetails,
+        admin:req.session.admin
+    })
+    } catch (error) {
+      res.send(404)
+    }
+    
+  },
+  orderManageByAdmin: async (req, res) => {
+    let orderProductDetails = await Order.findOne({ _id: req.params.id }, { products: 1 })
+    console.log(orderProductDetails.products)
+    res.render('admin/orderDetails', {
+      adminPartials,
+        submenuShow,
+      admin: req.session.admin,
+      orderProductDetails:orderProductDetails.products
+    })
   }
 };

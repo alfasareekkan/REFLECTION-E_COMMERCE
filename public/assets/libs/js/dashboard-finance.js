@@ -1,9 +1,4 @@
-/*
-Template Name: Influence Admin Template
-Author: jitu
-Email: chauhanjitu3@gmail.com
-File: js
-*/
+
 $(function() {
     "use strict";
     

@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const Numbers = require('twilio/lib/rest/Numbers')
 const orderSchema = new mongoose.Schema({
     user_id: {
         type: mongoose.Schema.Types.ObjectId

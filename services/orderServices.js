@@ -15,7 +15,6 @@ module.exports = {
                 orderStatus:"Pending" 
             })
             return  result = await newOrder.save()
-            console.log(result)
 
         } catch (error) {
             return null
@@ -29,18 +28,18 @@ module.exports = {
             let result;
             let order = await Order.findById(mongoose.Types.ObjectId(orderId));
             let product = order.products;
-            order.products = product.map(v => { return { ...v, paymentStatus:paymentStatus,orderStatus:orderStatus  } });
+            order.products = product.map(v => { return { ...v, paymentStatus:paymentStatus,orderStatus:[{ status:orderStatus,date:Date.now() }]  } });
             // let data = {
             order.paymentType= paymentMethod
             order.paymentStatus=paymentStatus
-            order.orderStatus=orderStatus
+            order.orderStatus = orderStatus
             order=await order.save();
 
           return order
             
         } catch (error) {
-            // return null
-            console.log(error)
+            return null
+            
         }
     }
 }

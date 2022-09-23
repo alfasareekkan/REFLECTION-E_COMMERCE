@@ -57,6 +57,17 @@ const exphbs = hbs.create({
       let status = array.slice(-1);
       
       return status[0].status
+    },
+    isSelectRadioButton: (ogValue, setValue) => {
+      function lastItemInArray(ogValue) {
+      let status = ogValue.slice(-1);
+      return status[0].status
+        
+      }
+      let result = lastItemInArray(ogValue)
+      console.log(setValue);
+      
+      return result == setValue ? 'Checked' : '';
     }
     
     // cartCountHelper: (userId,cb) => {return cartCountHelper(userId) },

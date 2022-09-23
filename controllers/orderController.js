@@ -6,7 +6,7 @@ const Cart = require("../models/cart");
 const Order = require("../models/order");
 const razorPayInstance = require("../utils/razorPay");
 const Coupons = require('../models/coupon');
-const { request } = require("http");
+const mongoose = require('mongoose');
 let adminPartials = true
 let adminPartialsDont = true
 let submenuShow = true
@@ -197,6 +197,7 @@ module.exports = {
   orderDetailsViewAdmin: async (req, res) => {
     try {
       let orderDetails = await Order.find({ orderStatus: 'Confirmed' });
+      
     res.render('admin/orders',
       {
         adminPartials,
@@ -210,13 +211,64 @@ module.exports = {
     
   },
   orderManageByAdmin: async (req, res) => {
-    let orderProductDetails = await Order.findOne({ _id: req.params.id }, { products: 1 })
-    console.log(orderProductDetails.products)
+    let orderProductDetails = await Order.findOne({ _id: req.params.id }, { products: 1 ,deliveryAddress:1})
+    console.log(orderProductDetails)
     res.render('admin/orderDetails', {
       adminPartials,
         submenuShow,
       admin: req.session.admin,
-      orderProductDetails:orderProductDetails.products
+      orderProductDetails:orderProductDetails
     })
+  },
+  adminChangeOrderStatus: async (req, res) => {
+    let { orderStatus, constantId, orderId } = req.body
+    // console.log(constantId)
+    let isOrderStatusAlreadyExist = await Order.findOne({
+      _id: mongoose.Types.ObjectId(orderId), products: {
+        $elemMatch: {
+          "products.productConstantId": mongoose.Types.ObjectId(constantId),
+          orderStatus: {
+            $elemMatch: {
+          "status":orderStatus
+        }
+          }
+        }
+      }
+    })
+    if (isOrderStatusAlreadyExist) {
+      for (let data of isOrderStatusAlreadyExist.products) {
+      // console.log(data)
+        for (let i = 0; i < data.orderStatus.length; i++){
+          if (data.products.productConstantId == constantId && orderStatus === data.orderStatus[i].status) {
+            let lastItem = data.orderStatus.slice(-1)
+            if (orderStatus === lastItem[0].status) {
+              // console.log("sgsdf❤️❤️")
+              data.orderStatus[i].date = Date.now()
+              console.log(data.orderStatus[i].date)
+              break
+            }
+            else{
+
+            }
+          }
+        }
+      }
+      await isOrderStatusAlreadyExist.save()
+
+      // console.log(isOrderStatusAlreadyExist.products[0])
+    } else {
+      let data={status: orderStatus,date:Date.now()}
+      await Order.updateOne({
+        _id: mongoose.Types.ObjectId(orderId), products: {
+          $elemMatch: {
+            "products.productConstantId": mongoose.Types.ObjectId(constantId),
+          }
+        }
+      }, {
+        $push: {"products.$.orderStatus": data
+        
+      }},{new: true})
+    }
+    res.status(200).json({ status: true })
   }
 };

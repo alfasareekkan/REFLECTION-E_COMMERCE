@@ -230,7 +230,7 @@
                                     style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th>No</th>
+                                            <th>Customer Name</th>
                                             <th>Order Date</th>
                                             <th>Order Status</th>
                                              <th>Payment Type</th>
@@ -244,7 +244,7 @@
                                     <tbody>
                                         {{#each orderDetails}}
                                             <tr id="{{this._id}}">
-                                                <td>{{@index}}</td>
+                                                <td>{{this.deliveryAddress.email}} </td>
                                                 <td>{{formatString this.updatedAt}}</td>
                                                 <td>{{this.orderStatus}}</td>
                                                 <td>{{this.paymentType}}</td>
@@ -273,7 +273,7 @@
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                             <th>No</th>
+                                             <th>Customer Name</th>
                                             <th>Order Date</th>
                                             <th>Order Status</th>
                                              <th>Payment Type</th>

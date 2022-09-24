@@ -98,6 +98,7 @@ router
 
 router.post('/v1/checkout-user', verifyUser, order.checkOutOrder)
 router.get('/v1/user-orders-view', verifyUser, order.userViewOrders)
+router.post('/v1/order-cancel-user',verifyUser, order.adminChangeOrderStatus)
 
 
 

@@ -81,9 +81,9 @@ const exphbs = hbs.create({
       let result = lastItemInArray(ogValue)
       console.log(result)
       
-      return result === 'Canceled' ? opt.fn(this) : opt.inverse(this);
+      return (result === 'Confirmed' ||result === 'Shipped') ? opt.fn(this) : opt.inverse(this);
     },
-    
+      
     // cartCountHelper: (userId,cb) => {return cartCountHelper(userId) },
   }
 });

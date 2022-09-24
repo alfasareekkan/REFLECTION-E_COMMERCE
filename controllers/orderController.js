@@ -222,7 +222,7 @@ module.exports = {
   },
   adminChangeOrderStatus: async (req, res) => {
     let { orderStatus, constantId, orderId } = req.body
-    // console.log(constantId)
+    console.log(req.body)
     let isOrderStatusAlreadyExist = await Order.findOne({
       _id: mongoose.Types.ObjectId(orderId), products: {
         $elemMatch: {

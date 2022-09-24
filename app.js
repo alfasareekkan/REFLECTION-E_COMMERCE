@@ -65,10 +65,24 @@ const exphbs = hbs.create({
         
       }
       let result = lastItemInArray(ogValue)
-      console.log(setValue);
       
       return result == setValue ? 'Checked' : '';
-    }
+    },
+    theDate: (string) => {
+      return new Date(string).toDateString();
+    },
+
+    isSelectOrderCancel: (ogValue,opt) => {
+      function lastItemInArray(ogValue) {
+      let status = ogValue.slice(-1);
+      return status[0].status
+        
+      }
+      let result = lastItemInArray(ogValue)
+      console.log(result)
+      
+      return result === 'Canceled' ? opt.fn(this) : opt.inverse(this);
+    },
     
     // cartCountHelper: (userId,cb) => {return cartCountHelper(userId) },
   }

@@ -270,5 +270,30 @@ module.exports = {
       }},{new: true})
     }
     res.status(200).json({ status: true })
+  },
+  userViewOrders: async (req, res) => { 
+    let userId=req.session.user._id
+    try {
+      let order = await Order.aggregate([
+        {
+          $match: {user_id:mongoose.Types.ObjectId(userId) }
+        },
+        {
+          $unwind: {
+            path:'$products'
+          }
+        }
+        
+      ])
+      console.log(order)
+      console.log(order[0].products)
+    res.render('user/userProfile/myOrders', {
+      userDetails: req.session.user,
+      order
+    })
+   } catch (error) {
+    console.log(error)
+   }
+    
   }
 };

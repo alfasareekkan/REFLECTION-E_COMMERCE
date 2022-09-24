@@ -96,7 +96,8 @@ router
   .route('/v1/checkout')
   .get(verifyUser, order.checkoutPage)
 
-router.post('/v1/checkout-user',verifyUser,order.checkOutOrder)
+router.post('/v1/checkout-user', verifyUser, order.checkOutOrder)
+router.get('/v1/user-orders-view', verifyUser, order.userViewOrders)
 
 
 

@@ -1,0 +1,218 @@
+
+
+<body>
+    <!-- ============================================================== -->
+    <!-- main wrapper -->
+    <!-- ============================================================== -->
+
+    <!-- ============================================================== -->
+    <!-- navbar -->
+    <!-- ============================================================== -->
+
+    <!-- wrapper  -->
+    <!-- ============================================================== -->
+    <div class="dashboard-wrapper">
+        <div class="container-fluid  dashboard-content">
+            <!-- ============================================================== -->
+            <!-- pageheader -->
+            <!-- ============================================================== -->
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="page-header">
+                        <h2 class="pageheader-title">Quantity</h2>
+                        <p class="pageheader-text">Quantity</p>
+                        <div class="page-breadcrumb">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="/admin/view-product-quantity"
+                                            class="breadcrumb-link"></a></li>
+                                    <li class="breadcrumb-item"><a href="/admin/view-product-quantity"
+                                            class="breadcrumb-link">Quantity</a></li>
+
+
+                                </ol>
+                            </nav>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- end pageheader -->
+            <!-- ============================================================== -->
+            <div class="row">
+                <!-- ============================================================== -->
+                <!-- basic table  -->
+                <!-- ============================================================== -->
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between">
+                            <h5 class="d-inline ">Quantity</h5>
+                           
+
+                        </div>
+                        <div class="modal fade " id="addbrands" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Add brands</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form method="post" action="/admin/add-brand" id="form" enctype="multipart/form-data">
+                                            {{!-- {{#if categorIsCheck}}
+                                <p>This category alredy exist</p>
+                                {{/if}} --}}
+
+                                            <div class="form-group">
+                                                <label for="recipient-name" class="col-form-label">Brand
+                                                    name</label>
+                                                <input type="text" class="form-control" placeholder="Brand name"
+                                                    name="brandName" required />
+                                            </div>
+                                            <div class="form-group">
+                                                <img src="" alt="" width="100px" height="100px" id="imageView">
+                                                <label for="recipient-name" class="col-form-label">Brand Logo
+                                                </label>
+                                                <input type="file" class="form-control" placeholder="Brand Logo"
+                                                    name="brandLogo" id="" onchange="changeImage(event)" required />
+                                            </div>
+
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Close</button>
+                                                <input type="submit" class="btn btn-primary" value="Add"
+                                                    onclick="return Validate()" />
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered first">
+                                    <thead>
+                                        <tr>
+                                            <th>Size</th>
+                                            <th>Quantity</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#each result}}
+                                        <tr>
+                                            <td>{{this.size.size}}</td>
+                                            <td>{{this.qauntity}}</td>
+                                            <td>
+                                                <span><button  class="mr-4" data-toggle="modal"
+                                                            data-target="#editQuantity{{this._id}}"
+                                                            data-placement="top" title="Edit"><i
+                                                                class="fa fa-edit color-muted"></i> </a>
+                                                      </span>
+                                            </td>
+                                        </tr>
+
+                                        
+
+                                        
+
+
+                                            {{!-- update Brands --}}
+                                <div class="modal fade " id="editQuantity{{this._id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Update Quantity</h5>
+                                        <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form method="post" action="/admin/update-quantity/{{this._id}}" id="form">
+                                            
+
+                                            <div class="form-group">
+                                                <label for="recipient-name" class="col-form-label">Size: {{this.size.size}}
+                                                    </label>
+                                                <input type="number" class="form-control" min="0" value="{{this.qauntity}}"
+                                                    name="qauntity"  />
+                                            </div>
+                                            
+
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Close</button>
+                                                <input type="submit" class="btn btn-primary" value="Update"
+                                                    />
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                      
+
+
+                                        {{/each}}
+
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Size</th>
+                                            <th>Quantity</th>
+
+                                            <th>Actions</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- end basic table  -->
+                <!-- ============================================================== -->
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- end data table multiselects  -->
+            <!-- ============================================================== -->
+
+            <!-- ============================================================== -->
+            <!-- footer -->
+            <!-- ============================================================== -->
+            <div class="footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                            Copyright © 2012 Concept. All rights reserved. by <a href="/">refelection</a>.
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                            <div class="text-md-right footer-links d-none d-sm-block">
+                                <a href="javascript: void(0);">About</a>
+                                <a href="javascript: void(0);">Support</a>
+                                <a href="javascript: void(0);">Contact Us</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+        <!-- ============================================================== -->
+        <!-- end footer -->
+        <!-- ============================================================== -->
+
+     
+
+</body>
+
+</html>

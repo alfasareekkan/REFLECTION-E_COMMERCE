@@ -85,6 +85,9 @@ router
   .route('/v1/get-all-size-with-catogory/:id?')
   .get(product.getAllSizeWithCatogory)
   .post(product.addSizeWithQuantity)
+router.get('/view-product-quantity', product.viewAllSizesWithQuantity)
+router.post('/update-quantity/:id',product.updateProductQuantity)
+
 
 
 router.post('/add-products',verifyAdmin, upload.array('image', 3), product.addminAddProductIntoDB)

@@ -120,12 +120,21 @@
 
                                                 <td>{{this.createdDay}}-{{this.createdMonth}}-{{this.createdYear}}</td>
                                                 <td>
+                                                    {{#isCheckProductQuantityExistOrNot  this.productConstants}}
                                                     <!-- Button trigger modal -->
-                                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                        data-bs-target="#exampleModal{{this._id}}"
-                                                        onclick="getAllSizes('{{this.category.[0]._id}}','{{this._id}}')">
-                                                        Quantity
+                                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                        data-bs-target="#exampleModal{{../this._id}}"
+                                                        onclick="getAllSizes('{{../this.category.[0]._id}}','{{../this._id}}')">
+                                                         Insert Quantity
                                                     </button>
+                                                   
+                                                    {{else}}
+                                                    <a type="button" class="btn btn-primary"
+                                                       href='/admin/view-product-quantity?prodId={{../this._id}}'>
+                                                        View Quantity
+                                                    </a>
+                                                    {{/isCheckProductQuantityExistOrNot}}
+
 
                                                     <!-- Modal -->
                                                     <div class="modal fade" id="exampleModal{{this._id}}"

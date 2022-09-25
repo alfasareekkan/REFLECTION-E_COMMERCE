@@ -32,7 +32,7 @@
                                                 <div class="py-2">
 
                                                     <span class="d-block text-muted">Order Date</span>
-                                                <span>12 Jan,2018</span>
+                                                <span></span>
                                                     
                                                 </div>
                                             </td>
@@ -41,7 +41,7 @@
                                                 <div class="py-2">
 
                                                     <span class="d-block text-muted">Order No</span>
-                                                <span>MT12332345</span>
+                                                <span>{{userOrder._id}}</span>
                                                     
                                                 </div>
                                             </td>
@@ -96,6 +96,9 @@
                                         </td>
                                         <td width="20%">
                                             <div class="text-right">
+                                                <span class="font-weight-bold">Qty:{{this.products.count}} </span>
+                                                <span class="font-weight-bold"> x{{this.cartItems.price}}</span>
+
                                                 <span class="font-weight-bold">${{this.eachTotal}}</span>
                                             </div>
                                         </td>
@@ -136,6 +139,20 @@
                                                         </div>
                                                     </td>
                                                 </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="text-left">
+
+                                                            <span class="text-muted">Discount</span>
+                                                            
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="text-right">
+                                                            <span>${{userOrder.offerPrice}}</span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
 
 
                                                  <tr>
@@ -167,13 +184,13 @@
                                                     <td>
                                                         <div class="text-left">
 
-                                                            <span class="font-weight-bold">Subtotal</span>
+                                                            <span class="font-weight-bold">Total Price</span>
                                                             
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="text-right">
-                                                            <span class="font-weight-bold">${{userOrder.subTotal}}</span>
+                                                            <span class="font-weight-bold">${{userOrder.totalPrice}}</span>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -191,19 +208,20 @@
 
                                 <p>We will be sending shipping confirmation email when the item shipped successfully!</p>
                                 <p class="font-weight-bold mb-0">Thanks for shopping with us!</p>
-                                <span>Nike Team</span>
+                                <span>Reflection Team</span>
 
 
 
                             
 
                         </div>
+                        <a href="/v1/user-orders-view">Go to orders</a>
 
 
                         <div class="d-flex justify-content-between footer p-3">
 
-                            <span>Need Help? visit our <a href="#"> help center</a></span>
-                             <span>12 June, 2020</span>
+                            <span>Need Help? visit our <a href="/"> help center</a></span>
+                             <span></span>
                             
                         </div>
 

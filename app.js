@@ -79,10 +79,18 @@ const exphbs = hbs.create({
         
       }
       let result = lastItemInArray(ogValue)
-      console.log(result)
+      
       
       return (result === 'Confirmed' ||result === 'Shipped') ? opt.fn(this) : opt.inverse(this);
     },
+    isCheckProductQuantityExistOrNot: (array, opt) => {
+      
+      if (array.length === 0) {
+        return opt.fn(this)
+      } else {
+        return opt.inverse(this);    
+      } 
+    }
       
     // cartCountHelper: (userId,cb) => {return cartCountHelper(userId) },
   }

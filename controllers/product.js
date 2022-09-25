@@ -15,6 +15,7 @@ const ProductConstants = require("../models/productConstants");
 module.exports = {
   adminviewAllProducts: (req, res, nex) => {
     helpers.adminviewAllProducts().then((products) => {
+      
       res.render("admin/products", {
         adminPartials,
         submenuShowProduct,
@@ -212,5 +213,54 @@ module.exports = {
     } catch (error) {
       console.log(error)
     }
+  },
+  viewAllSizesWithQuantity: async (req, res) => { 
+    try {
+      let proId = req.query.prodId;
+      console.log(proId)
+      let result = await ProductConstants.aggregate([
+        {
+          $match: {
+          product_id:mongoose.Types.ObjectId(proId)
+          }
+        },
+        {
+          $lookup: {
+            from: 'productsizes',
+            localField: 'size_id',
+            foreignField: '_id',
+            as:"size"
+          }
+        }, {
+          $unwind: {
+            path:'$size'
+          }
+        },
+        {
+          $project: {
+            qauntity: 1,
+            'size.size':1
+          }
+        }
+      ])
+      res.render('admin/viewProductQuantity', {
+        result,
+        admin: req.session.admin,
+        adminPartials :true,
+        
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  updateProductQuantity: async(req, res) => {
+    let constantId = req.params.id;
+    let { qauntity } = req.body;
+    console.log(req.body)
+    let result = await ProductConstants.updateOne({ _id: constantId }, { $set: { qauntity: qauntity } })
+    if (result.modifiedCount === 1) {
+      res.redirect('/products')
+    }
+    
   }
 };

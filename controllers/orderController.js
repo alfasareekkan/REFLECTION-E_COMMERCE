@@ -242,7 +242,7 @@ module.exports = {
           if (data.products.productConstantId == constantId && orderStatus === data.orderStatus[i].status) {
             let lastItem = data.orderStatus.slice(-1)
             if (orderStatus === lastItem[0].status) {
-              // console.log("sgsdf❤️❤️")
+              
               data.orderStatus[i].date = Date.now()
               console.log(data.orderStatus[i].date)
               break
@@ -279,6 +279,11 @@ module.exports = {
           $match: {user_id:mongoose.Types.ObjectId(userId) }
         },
         {
+          $sort: {
+            'createdAt':-1,
+          }
+        },
+        {       
           $unwind: {
             path:'$products'
           }

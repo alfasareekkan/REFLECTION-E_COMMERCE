@@ -84,6 +84,14 @@ module.exports = {
 
                 },
                 {
+                    $lookup: {
+                        from: "productconstants",
+                        localField: "_id",
+                        foreignField: "product_id",
+                        as:'productConstants'
+                    }
+                },
+                {
                     $project: {
                         
                         title: 1,
@@ -93,7 +101,8 @@ module.exports = {
                         price:1,
                         description: 1,
                         image:1,
-                        active:1,
+                        active: 1,
+                        productConstants:1,
                         createdYear: { $year: "$createdAt" },
                         createdMonth: { $month: "$createdAt" },
                         createdDay: { $dayOfMonth: "$createdAt" },
@@ -101,13 +110,17 @@ module.exports = {
                         updatedMonth: { $month: "$updatedAt" },
                         updatedDay: { $dayOfMonth: "$updatedAt" }
                  }
-                }
+                },
+                {
+                    $sort: {
+                        updatedDay:-1,updatedMonth:-1,updatedYear:-1
+                }}
             ]).then((data) => {
-                console.log(data)
+                
                 resolve(data)
             })
 
-        })
+        }) 
     },
     adminProductDelete: (id, image1_id, image2_id, image3_id) => {
         return new Promise(async(resolve, reject) => { 
@@ -229,6 +242,10 @@ module.exports = {
             await sizeCollection.save()
             resolve()
      })
+    },
+    adminUpdateQuantity: (req, res) => {
+        let constId = req.query.constId;
+        console.log(constId)
     }
     
 }

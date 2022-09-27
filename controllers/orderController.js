@@ -235,27 +235,42 @@ module.exports = {
         }
       }
     })
+    
     if (isOrderStatusAlreadyExist) {
-      for (let data of isOrderStatusAlreadyExist.products) {
       // console.log(data)
+      isOrderStatusAlreadyExist.products.map(async(data)=>{
         for (let i = 0; i < data.orderStatus.length; i++){
           if (data.products.productConstantId == constantId && orderStatus === data.orderStatus[i].status) {
             let lastItem = data.orderStatus.slice(-1)
-            if (orderStatus === lastItem[0].status) {
-              
+            if (orderStatus === lastItem[0].status) {    
               data.orderStatus[i].date = Date.now()
-              console.log(data.orderStatus[i].date)
               break
             }
             else{
-
+              let s = data.orderStatus.splice(i + 1)
+              data.orderStatus[i].date = Date.now()
+              await Order.findByIdAndUpdate(orderId,isOrderStatusAlreadyExist)
+              break
             }
           }
         }
-      }
+      })
       await isOrderStatusAlreadyExist.save()
+      
+      if (orderStatus === "Delivered") {
+       let re= await Order.findOneAndUpdate({
+          _id: mongoose.Types.ObjectId(orderId), products: {
+            $elemMatch: {
+              "products.productConstantId": mongoose.Types.ObjectId(constantId),
+            }
+          }
+        }, { 
+          $set: {"products.$.paymentStatus":true 
+         }
+       }, { new: true })
+        
+      }
 
-      // console.log(isOrderStatusAlreadyExist.products[0])
     } else {
       let data={status: orderStatus,date:Date.now()}
       await Order.updateOne({
@@ -297,8 +312,39 @@ module.exports = {
       order
     })
    } catch (error) {
-    console.log(error)
+    res.send('/404error')
    }
     
+  },
+  eachOrders: async(req, res) => {
+    let lastThirteenDaysOrders =await Order.aggregate([
+      {
+          $project: {
+              products: 1,
+              createdAt: 1,
+              "deliveryAddress.firstName": 1,
+          "deliveryAddress.lastName": 1,
+          "deliveryAddress.email": 1,
+          paymentType: 1,
+          totalPrice:1,
+          offerPrice:1,
+          subTotal:1,
+          }
+      },
+      { $unwind: { path: "$products" } },
+      { $match: { "products.orderStatus": { $exists: true } } },  
+      {
+        $sort: {
+          'createdAt':-1,
+        }
+      }
+    ])
+    console.log(lastThirteenDaysOrders[0].products)
+    res.render("admin/everyOrders",{
+      admin: req.session.admin,
+      adminPartials,
+      submenuShow,
+      lastThirteenDaysOrders
+    })
   }
 };

@@ -107,7 +107,8 @@ router.delete('/v1/delete-coupon',verifyAdmin, coupon.deleteCoupon)
 
 router.get('/v1/order-details',verifyAdmin, orderController.orderDetailsViewAdmin)
 router.get('/v1/order-management/:id',verifyAdmin, orderController.orderManageByAdmin)
-router.post('/v1/change-order-status',verifyAdmin,orderController.adminChangeOrderStatus)
+router.post('/v1/change-order-status', verifyAdmin, orderController.adminChangeOrderStatus)
+router.get('/v1/each-orders',verifyAdmin,orderController.eachOrders)
 
 
 

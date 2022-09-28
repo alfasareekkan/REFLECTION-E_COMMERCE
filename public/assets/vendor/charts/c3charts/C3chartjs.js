@@ -1,6 +1,6 @@
 (function(window, document, $, undefined) {
     "use strict";
-    $(function() {
+    $(async function() {
 
         if ($('#c3chart_area').length) {
             var chart = c3.generate({
@@ -268,30 +268,42 @@
         }
 
         if ($('#c3chart_pie').length) {
-            var chart = c3.generate({
-                bindto: "#c3chart_pie",
-                data: {
-                    columns: [
-                        ['data1', 30],
-                        ['data2', 50]
-                    ],
-                    type: 'pie',
+            var resData
 
-                    colors: {
-                         data1: '#5969ff',
-                        data2: '#ff407b'
-
-
-                    }
-                },
-                pie: {
-                    label: {
-                        format: function(value, ratio, id) {
-                            return d3.format('$')(value);
+           fetch("/admin/dashboard-pie-chart", {
+               method: 'GET',
+           }).then((response) => response.json()).then((data) => {
+            
+                var chart = c3.generate({
+                    bindto: "#c3chart_pie",
+                    data: {
+                        columns: [
+                            ['RazorPay', data.piChartData.razorPayCount],
+                            ['Cod', data.piChartData.codCount]
+                        ],
+                        type: 'pie',
+    
+                        colors: {
+                             data1: '#5969ff',
+                            data2: '#ff407b'
+    
+    
+                        }
+                    },
+                    pie: {
+                        label: {
+                            format: function(value, ratio, id) {
+                                return d3.format('$')(value);
+                            }
                         }
                     }
-                }
-            });
+                });
+        //     }
+            })
+                   
+               
+            //  })
+            
         }
 
         if ($('#c3chart_donut').length) {
@@ -343,50 +355,7 @@
             }, 2500);
         }
 
-        if ($('#c3chart_gauge').length) {
-            var chart = c3.generate({
-                bindto: "#c3chart_gauge",
-                data: {
-                    columns: [
-                        ['data1', 91.4]
-
-                    ],
-                    type: 'gauge',
-                    onclick: function(d, i) { console.log("onclick", d, i); },
-                    onmouseover: function(d, i) { console.log("onmouseover", d, i); },
-                    onmouseout: function(d, i) { console.log("onmouseout", d, i); },
-                    colors: {
-                      data1: '#5969ff',
-                        data2: '#ff407b',
-                        data3: '#25d5f2',
-                        data4: '#ffc750',
-                        data5: '#2ec551',
-                        data6: '#1ba3b9',
-
-                    }
-                },
-                gauge: {
-                    //        label: {
-                    //            format: function(value, ratio) {
-                    //                return value;
-                    //            },
-                    //            show: false // to turn off the min/max labels.
-                    //        },
-                    //    min: 0, // 0 is default, //can handle negative min e.g. vacuum / voltage / current flow / rate of change
-                    //    max: 100, // 100 is default
-                    //    units: ' %',
-                    //    width: 39 // for adjusting arc thickness
-                },
-
-                size: {
-                    height: 320
-                }
-            });
-
-
-
-        }
-
+       
 
     });
 

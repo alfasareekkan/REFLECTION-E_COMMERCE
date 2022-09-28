@@ -93,5 +93,42 @@ module.exports = {
         }
         
         
+    },
+    pieChart: async (req, res) => {
+        console.log("👌👌")
+        try {
+            let piChartData = await Order.aggregate([
+                {
+                    $project: {
+                        products: 1,
+                        paymentType:1
+                        
+                    }
+                },
+                { $unwind: { path: "$products" } },
+                { $match: {"products.orderStatus": {$exists:true }} },
+                {
+                    $group: {
+                        _id:null,
+                        razorPayCount: {
+                            $sum: {
+                                $cond: [{ $eq: ["$paymentType", "razorPay"] }, 1, 0 ]
+                            }
+                        },
+                        codCount: {
+                            $sum: {
+                                $cond: [{ $eq: ["$paymentType", "COD"] }, 1, 0 ]
+                            }
+                        },
+                        
+                    }
+                }
+                
+                
+            ])
+            res.status(200).json({piChartData:piChartData[0]})  
+        } catch (error) {
+            console.log(error);
+        }
     }
 }

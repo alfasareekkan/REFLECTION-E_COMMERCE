@@ -83,6 +83,7 @@ module.exports = {
             "Confirmed",
             false
           );
+          
           await Cart.findByIdAndDelete(userCart[0]._id);
           res
             .status(200)

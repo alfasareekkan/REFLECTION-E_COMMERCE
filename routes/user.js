@@ -10,16 +10,15 @@ const { verifyUser } = require('../middleware/authenticationMiddleware')
 const wishlist = require('../controllers/wishlistController');
 const order = require('../controllers/orderController');
 const user = require('../controllers/user')
-const coupon=require('../controllers/couponController')
+const coupon = require('../controllers/couponController')
+const homePage=require('../controllers/bannerController')
 // const { routes } = require("../app");
 
 
 
 
 /* GET home page. */
-router.get("/", function (req, res, next) {
-  res.render("index", { userDetails: req.session.user});
-});
+router.get("/",homePage.viewHomePage);
 router.get("/404error", (req, res) => {
   res.render("errPage/404error", { userPartialDont });
 });
@@ -113,7 +112,7 @@ router
 router.post('/v1/verify-payment',verifyUser,order.verifyPayment)
 router.get('/v1/user-profile', verifyUser, user.userProfile)
 router.get('/v1/user-account-address', verifyUser, user.userAccountAddress)
-
+router.get('/v1/user-profile-details', verifyUser, user.userProfileDetails)
 //coupon 
 router.get('/v1/coupons', verifyUser, coupon.viewUsersCoupon)
 router.post('/v1/redeem-coupon',verifyUser,order.redeemCoupon)

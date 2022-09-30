@@ -293,7 +293,7 @@
                     pie: {
                         label: {
                             format: function(value, ratio, id) {
-                                return d3.format('$')(value);
+                                return d3.format('')(value);
                             }
                         }
                     }

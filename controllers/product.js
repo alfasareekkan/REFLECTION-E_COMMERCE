@@ -256,7 +256,7 @@ module.exports = {
   updateProductQuantity: async(req, res) => {
     let constantId = req.params.id;
     let { qauntity } = req.body;
-    console.log(req.body)
+  
     let result = await ProductConstants.updateOne({ _id: constantId }, { $set: { qauntity: qauntity } })
     if (result.modifiedCount === 1) {
       res.redirect('/products')

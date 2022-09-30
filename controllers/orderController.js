@@ -223,7 +223,7 @@ module.exports = {
   },
   adminChangeOrderStatus: async (req, res) => {
     let { orderStatus, constantId, orderId } = req.body
-    console.log(req.body)
+    
     let isOrderStatusAlreadyExist = await Order.findOne({
       _id: mongoose.Types.ObjectId(orderId), products: {
         $elemMatch: {
@@ -306,8 +306,7 @@ module.exports = {
         }
         
       ])
-      console.log(order)
-      console.log(order[0].products)
+      
     res.render('user/userProfile/myOrders', {
       userDetails: req.session.user,
       order

@@ -95,7 +95,6 @@ module.exports = {
         
     },
     pieChart: async (req, res) => {
-        console.log("👌👌")
         try {
             let piChartData = await Order.aggregate([
                 {

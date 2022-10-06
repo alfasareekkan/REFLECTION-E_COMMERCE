@@ -151,7 +151,7 @@ module.exports = {
             { maxPrice: { $gt: orderDetails.orderDetails.subTotal } }
           ]
         })
-        let expDate = coupon?.expiryDate
+        let expDate = coupon.expiryDate
         let expiryCheck= expDate>=Date.now() ? true:false; 
         if (expiryCheck) {
           console.log(orderDetails)

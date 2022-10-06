@@ -153,8 +153,8 @@ module.exports = {
       }
         const data = {
         brandName:brandData.brandName || brand.brandName,
-        brandLogo:result?.secure_url||brandLogo.secure_url,
-          cloudinary_id: result?.public_id || brand.cloudinary_id
+        brandLogo:result.secure_url||brandLogo.secure_url,
+          cloudinary_id: result.public_id || brand.cloudinary_id
         }
         brand = await Brand.findByIdAndUpdate(id, data, { new: true })
         resolve()

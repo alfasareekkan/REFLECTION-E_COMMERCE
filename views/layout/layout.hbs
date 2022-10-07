@@ -45,6 +45,11 @@
 	 {{>user-partial}}
 	{{/if}}
     {{{body}}}
+	{{#if adminPartials}}
+	{{!-- {{>admin-partials}} --}}
+	{{else}}
+	 {{>user-footer}}
+	{{/if}}
 	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 		<script src="/javascripts/script.js"></script>
 

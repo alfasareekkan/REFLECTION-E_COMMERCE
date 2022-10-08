@@ -3,11 +3,22 @@ let adminPartialsDont = true;
 let submenuShowProduct = true;
 let Product = require('../models/product')
 let cloudinary = require('../utils/cloudinary')
-let Banner=require('../models/banner')
+let Banner = require('../models/banner')
+const cartServices = require('../services/cartServices')
+
 module.exports = {
-    viewHomePage: async(req, res) => {
-        let banners= await Banner.find()
-        res.render("index", { userDetails: req.session.user,banners});
+    viewHomePage: async (req, res) => {
+        let userDetails=req.session.user
+        let banners = await Banner.find()
+        // console.log(req.cartCount,'😒😒😒')
+        let cartCount
+        if (userDetails) {
+            cartCount = await cartServices.cartCountHelper(userDetails._id)
+        } else {
+            cartCount=0
+        }
+
+        res.render("index", { userDetails: req.session.user,banners,cartCount});
     },
     // adminAddPrimary
     bannerManageByAdmin: async(req, res) => {

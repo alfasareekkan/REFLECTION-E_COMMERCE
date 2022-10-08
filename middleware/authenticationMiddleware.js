@@ -1,5 +1,8 @@
 const User = require('../models/user')
-const mongoose=require('mongoose')
+const mongoose = require('mongoose')
+const cartServices = require('../services/cartServices')
+
+
 
 module.exports = {
     verifyUser: async (req, res, next) => {
@@ -13,6 +16,11 @@ module.exports = {
                     res.redirect('/')
                 }
                 else {
+                    let userDetails= req.session.user
+                    let cartCount = await cartServices.cartCountHelper(userDetails._id)
+                    req.cartCount = cartCount
+                    console.log(req.cartCount,"🐉🐉🐉🐉❤️❤️")
+
                     next()
                 }
             }

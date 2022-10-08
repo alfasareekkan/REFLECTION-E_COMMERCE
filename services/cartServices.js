@@ -84,7 +84,7 @@ module.exports = {
   },
     cartCountHelper: async (userId) => {
       try {
-      console.log("💕💕💕💕💕")
+      
       let cartCount = await Cart.aggregate([
         {
           $match: { user_id: mongoose.Types.ObjectId(userId) },
@@ -97,8 +97,7 @@ module.exports = {
           },
         },
       ]);
-      console.log(cartCount[0].cartCount)
-      console.log(cartCount) 
+      
 
       return cartCount[0].cartCount;
       } catch (error) {

@@ -104,6 +104,11 @@
                             </div>
                         </div>
                     </div>
+                    <div>
+  <canvas id="myChart"></canvas>
+  
+</div>
+
                             <!-- ============================================================== -->
 
                             <!-- ============================================================== -->
@@ -161,7 +166,6 @@
 
 
 
-
                 <!-- ============================================================== -->
                 <!-- footer -->
                 <!-- ============================================================== -->
@@ -193,8 +197,48 @@
 
         <!-- ============================================================== -->
         <!-- end main wrapper  -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+   
         <!-- ============================================================== -->
-        <!-- Optional JavaScript -->
+     <script>
+       //var pageData = '{{{json lastWeek}}}';
+        var decodedJson = decodeURIComponent("{{{encodedJson}}}");
+  var jsonObj = JSON.parse(decodedJson); 
+        let result = jsonObj.map(a => a.totalSales);
+        var rr=[]
+        var a
+        for(var i = 0; i < jsonObj.length; i++){
+        a=jsonObj[i]._id.day+'-'+jsonObj[i]._id.month+'-'+jsonObj[i]._id.year;
+        console.log(a)
+          rr.push(a);
+        }
+         
+  const labels = rr
+
+  const data = {
+    labels: labels,
+    datasets: [{
+      label: 'Total sales in each day',
+      backgroundColor: 'rgb(255, 99, 132)',
+      borderColor: 'rgb(255, 99, 132)',
+      data: result,
+    }]
+  };
+
+  const config = {
+    type: 'line',
+    data: data,
+    options: {}
+  };
+</script>
+
+<script>
+  const myChart = new Chart(
+    document.getElementById('myChart'),
+    config
+  );
+</script>
+
         <!-- jquery 3.3.1 -->
         <script src="/assets/vendor/jquery/jquery-3.3.1.min.js"></script>
         <!-- bootstap bundle js -->

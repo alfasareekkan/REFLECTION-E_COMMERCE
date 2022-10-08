@@ -80,16 +80,82 @@ module.exports = {
                 },
                 
             ])
+            // let graph=await Order.aggregate([
+            //     {
+            //       $group: {
+            //         _id: {
+            //           "weekNo": {
+            //             $week: "$createdAt"
+            //           },
+            //           "start_date": {
+            //             "$dateFromString": {
+            //               "dateString": {
+            //                 "$dateToString": {
+            //                   "date": "$createdAt",
+            //                   "format": "%G/%V",
+            //                 },
+            //               },
+            //               "format": "%G/%V"
+            //             }
+            //           },
+            //           "end_date": {
+            //             "$add": [
+            //               {
+            //                 "$dateFromString": {
+            //                   "dateString": {
+            //                     "$dateToString": {
+            //                       "date": "$createdAt",
+            //                       "format": "%G/%V",
+            //                     },
+            //                   },
+            //                   "format": "%G/%V"
+            //                 }
+            //               },
+            //               518400000,
+            //             ],
+            //           },
+            //         },
+            //         totalPrice: {
+            //           $sum: "$totalPrice"
+            //         }
+            //       }
+            //     }
+            //   ])
+
+            let lastWeek =await Order.aggregate([
+                
+                { $unwind: { path: "$products" } },
+                { $match: { "products.orderStatus": { $exists: true } ,"products.paymentStatus": true } },
+                {
+                    $group: {
+                        _id: {
+                            day: {
+                                $dayOfMonth: "$createdAt"
+                            }, month: {
+                                $month: "$createdAt"
+                            }, year: {
+                                $year: "$createdAt"
+                            }
+                        },
+                        totalSales: { $sum: '$products.eachTotal' }
+                    }
+                },
+                
+            ])
+            console.log(lastWeek)
            
             res.render('admin/adminhome', {
                 adminPartials, admin: req.session.admin,
                 userCount,
                 totalOrders,
                 totalRevenue,
-                lastThirteenDaysOrders
+                lastThirteenDaysOrders,
+                lastWeek
+                ,encodedJson : encodeURIComponent(JSON.stringify(lastWeek))
             }) 
         } catch (error) {
-            console.log(error) 
+            console.error(error);
+            res.redirect('/404error')
         }
         
         

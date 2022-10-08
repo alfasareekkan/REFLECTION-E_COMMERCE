@@ -90,7 +90,11 @@ const exphbs = hbs.create({
       } else {
         return opt.inverse(this);    
       } 
+    },
+    json: (arr) => {
+      return JSON.stringify(arr);
     }
+
       
     // cartCountHelper: (userId,cb) => {return cartCountHelper(userId) },
   }

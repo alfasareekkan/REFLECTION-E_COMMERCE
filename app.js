@@ -93,9 +93,9 @@ const exphbs = hbs.create({
     },
     json: (arr) => {
       return JSON.stringify(arr);
-    }
+    }  
 
-      
+       
     // cartCountHelper: (userId,cb) => {return cartCountHelper(userId) },
   }
 });

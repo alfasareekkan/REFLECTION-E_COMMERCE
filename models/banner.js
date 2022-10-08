@@ -9,7 +9,7 @@ const bannerSchema = new mongoose.Schema({
     image: {
         type: String,
     },
-    categoryOrProductId: {
+    productId: {
         type: mongoose.Schema.Types.ObjectId,
     },
     publishStatus: {
@@ -22,4 +22,5 @@ const bannerSchema = new mongoose.Schema({
     headTwo: {
         type: String
     }
-})
+},{timestamps: true,collection: 'banners'})
+module.exports =mongoose.model('banner',bannerSchema)

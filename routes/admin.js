@@ -10,6 +10,7 @@ const { login } = require('../controllers/auth.controller');
 const { displayAllCustomers, updateUserStatus } = require('../controllers/customer')
 const coupon=require('../controllers/couponController');
 const orderController = require('../controllers/orderController');
+const bannerController = require('../controllers/bannerController')
 let adminPartials = true
 let adminPartialsDont=true
 
@@ -111,6 +112,11 @@ router.get('/v1/order-details',verifyAdmin, orderController.orderDetailsViewAdmi
 router.get('/v1/order-management/:id',verifyAdmin, orderController.orderManageByAdmin)
 router.post('/v1/change-order-status', verifyAdmin, orderController.adminChangeOrderStatus)
 router.get('/v1/each-orders', verifyAdmin, orderController.eachOrders)
+
+//bannerManagement
+
+router.get('/banner-management', bannerController.bannerManageByAdmin)
+router.post('/add-banner',upload.single('bannerImage'),bannerController.addBanner)
 
 
 

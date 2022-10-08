@@ -3,13 +3,13 @@ function _(element) {
 }
 _("sizes").onchange = function () {
   let id = _("sizes").value;
-  console.log(id);
+  
   fetch("/v1/get-size-of-quantity/" + id, {
     method: "GET",
   })
     .then((response) => response.json())
     .then((response) => {
-      console.log(response);
+      
       var buttonId = document.getElementById("add-cart-desable");
       var bagButton = document.getElementById("bagButton");
       var html = "";
@@ -49,13 +49,12 @@ _("sizes").onchange = function () {
 //add to cart
 async function addToCart(productId) {
   var productConstants = document.getElementById("product-constants").innerHTML;
-  console.log(productConstants);
   await fetch("/v1/add-product-to-cart/" + productId + "/" + productConstants, {
     method: "POST",
   })
     .then((response) => response.json())
     .then((response) => {
-      console.log(response);
+      
       var buttonId = document.getElementById("add-cart-desable");
       var bagButton = document.getElementById("bagButton");
       var cartBadge = document.getElementById("cartBadge");
@@ -272,7 +271,7 @@ function getAllCountries(addressId) {
     .then(result => {
       var html = ""
       html='<option value="" selected>Choose...</option>'
-      // console.log(result[0])
+      
       var list
       if (addressId) {
       list=document.getElementById("countryList"+addressId)
@@ -290,7 +289,7 @@ function getAllCountries(addressId) {
       list.innerHTML = html
 
     })
-      .catch(error => console.log('error', error));
+      
 }
 var allStates;
 
@@ -304,7 +303,7 @@ function fetchStateData() {
       allStates=result
 
     })
-      .catch(error => console.log('error', error));
+     
 }
 
 function fetchStateDataEach(addressId) {
@@ -316,7 +315,7 @@ function fetchStateDataEach(addressId) {
   //   .then(result => {
       var html2 = ""
       html2='<option value="" selected>Choose...</option>'
-      // console.log(result)
+     
   var stateList
   var countryList
   if (addressId) {
@@ -331,9 +330,9 @@ function fetchStateDataEach(addressId) {
   }
   
       allStates.map(state => {
-        // console.log(countryList)
+       
         if (countryList.value == state.country_name) {
-          // console.log(state)
+          
         html2 += `<option value="${state.name}">${state.name}</option>`
 
         }
@@ -345,7 +344,7 @@ function fetchStateDataEach(addressId) {
 }
     
 // )
-//       .catch(error => console.log('error', error));
+//
 // }
 
 function changeCountryList(addressId){
@@ -364,11 +363,11 @@ function changeCountryList(addressId){
 
 
 // async function submitCheckOutForm(e) {
-//   console.log("sdfcsda")
+//  
 //   e.preventDefault();
 //   let formData = new FormData(formCheckOut123);
 //   dataToSend = Object.fromEntries(formData);
-//   console.log(dataToSend);
+//   
 //    await fetch('/v1/checkout-user', {
 //     method: "POST",
 //     body: JSON.stringify(dataToSend),

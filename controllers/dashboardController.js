@@ -139,7 +139,7 @@ module.exports = {
                         },
                         totalSales: { $sum: '$products.eachTotal' }
                     }
-                },
+                },{$sort:{_id:-1}}
                 
             ])
             console.log(lastWeek)

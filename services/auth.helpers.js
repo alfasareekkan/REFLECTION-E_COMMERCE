@@ -9,7 +9,7 @@ module.exports = {
             if (user) {
                 responce.status = true
                 resolve(responce)
-            }
+             }
             else {
                 resolve(responce)
              }
